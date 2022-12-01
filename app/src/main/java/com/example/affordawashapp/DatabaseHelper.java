@@ -14,11 +14,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TBLMACHINE = "tbl_machine";
     public static final String TBLCUSTOMER = "tbl_customer";
     
-//    String[] managerFields = {"id", "manager_username", "manager_password"};
-//    String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
-//    String[] itemFields = {"id", "item_name", "item_quantity", "item_init_price", "item_lowest_price", "item_selling_price"};
-//    String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
-//    String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
+    String[] managerFields = {"id", "manager_username", "manager_password"};
+    String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
+    String[] itemFields = {"id", "item_name", "item_quantity", "item_init_price", "item_lowest_price", "item_selling_price"};
+    String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
+    String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
     
     
     public DatabaseHelper(Context context){
