@@ -3,6 +3,7 @@ package com.example.affordawashapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +18,9 @@ public class Manager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
         databaseHelper = new DatabaseHelper(Manager.this);
-        
+        textView = (TextView) findViewById(R.id.tvMan);
+        Intent intent = getIntent();
+        textView.setText(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0][1]);
     }
     
     
