@@ -43,7 +43,6 @@ public class Login extends AppCompatActivity {
     }
     
     public void onClickLogin(View view){
-        
         String username = etusername.getText().toString();
         String password = etpassword.getText().toString();
         boolean loggedIn = false;

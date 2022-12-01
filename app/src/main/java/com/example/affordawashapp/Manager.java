@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 public class Manager extends AppCompatActivity {
     SharedPreferences preferences;
@@ -21,6 +23,15 @@ public class Manager extends AppCompatActivity {
         editor.putBoolean("LoggedIn", true);
         editor.putString("table", DatabaseHelper.TBLMANAGER);
         editor.apply();
+    }
+    
+    public void textClick(View view){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("LoggedIn", false);
+        editor.remove("table");
+        editor.apply();
+        startActivity(new Intent(getApplicationContext(), Login.class));
+        finish();
     }
     
     @Override
