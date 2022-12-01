@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
+
+import java.util.HashMap;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DBNAME = "db_affordawash";
     public static final String TBLMANAGER = "tbl_manager";
@@ -84,9 +88,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 break;
             default:
         }
-        
-        String[] array;
-        
         return values;
     }
     
@@ -119,7 +120,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[][] result = new String[res.getCount()][column];
         if(res.getCount() == 0){
             return new String[][]{{"NO DATA!"}};
-        } else {
+        }
+        else {
             int ctr = 0;
             while (res.moveToNext()) {
                 for(int i = 0; i < result[ctr].length; i++) {
@@ -176,4 +178,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return result;
     }
+    
+    //LOGIN ALGORITHM FOR Manager or Employee
+    public User login(String username, String password){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        Cursor res = liteDatabase.rawQuery("SELECT id FROM " + TBLMANAGER + " WHERE manager_username='" + username + "' AND manager_password='" + password + "'", null);
+        while (res.moveToNext()){
+            return new User(TBLMANAGER, Integer.parseInt(res.getString(0)), username);
+        }
+        res = liteDatabase.rawQuery("SELECT id FROM " + TBLEMPLOYEE + " WHERE employee_username='" + username + "' AND employee_password='" + password + "'", null);
+        while (res.moveToNext()){
+            return new User(TBLEMPLOYEE, Integer.parseInt(res.getString(0)), username);
+        }
+        return null;
+    }
+    
+    public static class User{
+        public String table;
+        public int id;
+        public String username;
+        public User(String table, int id, String username){
+            this.table = table;
+            this.id = id;
+            this.username = username;
+        }
+        
+    }
+    
+    
 }

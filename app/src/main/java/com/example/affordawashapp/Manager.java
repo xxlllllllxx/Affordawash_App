@@ -3,36 +3,23 @@ package com.example.affordawashapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 
 public class Manager extends AppCompatActivity {
-    SharedPreferences preferences;
+    DatabaseHelper databaseHelper;
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
-        preferences = getSharedPreferences("Login", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("LoggedIn", true);
-        editor.putString("table", DatabaseHelper.TBLMANAGER);
-        editor.apply();
+        databaseHelper = new DatabaseHelper(Manager.this);
+        
     }
     
-    public void textClick(View view){
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("LoggedIn", false);
-        editor.remove("table");
-        editor.apply();
-        startActivity(new Intent(getApplicationContext(), Login.class));
-        finish();
-    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
