@@ -50,41 +50,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(id > 0){
             values.put("id", id);
         }
-        
         switch (tbl){
             case TBLMANAGER:
-                values.put("manager_username", arr[0]);
-                values.put("manager_password", arr[1]);
+                values.put(managerFields[1], arr[0]);
+                values.put(managerFields[2], arr[1]);
                 break;
             case TBLEMPLOYEE:
-                values.put("employee_username", arr[0]);
-                values.put("employee_password", arr[1]);
-                values.put("employee_salary", Double.parseDouble(arr[2]));
+                values.put(employeeFields[1], arr[0]);
+                values.put(employeeFields[2], arr[1]);
+                values.put(employeeFields[3], Double.parseDouble(arr[2]));
                 break;
             case TBLITEM:
-                values.put("item_name", arr[0]);
-                values.put("item_quantity", Integer.parseInt(arr[1]));
-                values.put("item_init_price", Double.parseDouble(arr[2]));
-                values.put("item_lowest_price", Double.parseDouble(arr[3]));
-                values.put("item_selling_price", Double.parseDouble(arr[4]));
+                values.put(itemFields[1], arr[0]);
+                values.put(itemFields[2], Integer.parseInt(arr[1]));
+                values.put(itemFields[3], Double.parseDouble(arr[2]));
+                values.put(itemFields[4], Double.parseDouble(arr[3]));
+                values.put(itemFields[5], Double.parseDouble(arr[4]));
                 break;
             case TBLMACHINE:
-                values.put("is_available", Boolean.parseBoolean(arr[0]));
-                values.put("washing", Boolean.parseBoolean(arr[1]));
-                values.put("drying", Boolean.parseBoolean(arr[2]));
-                values.put("washing_price", Double.parseDouble(arr[3]));
-                values.put("drying_price", Double.parseDouble(arr[4]));
+                values.put(machineFields[1], Boolean.parseBoolean(arr[0]));
+                values.put(machineFields[2], Boolean.parseBoolean(arr[1]));
+                values.put(machineFields[3], Boolean.parseBoolean(arr[2]));
+                values.put(machineFields[4], Double.parseDouble(arr[3]));
+                values.put(machineFields[5], Double.parseDouble(arr[4]));
                 break;
             case TBLCUSTOMER:
-                values.put("customer_alias", arr[0]);
-                values.put("employee_id", Integer.parseInt(arr[1]));
-                values.put("machine_id_list", arr[2]);
-                values.put("item_id_list", arr[3]);
-                values.put("transaction_payment", Double.parseDouble(arr[4]));
-                values.put("transaction_datetime", arr[5]);
+                values.put(customerFields[1], arr[0]);
+                values.put(customerFields[2], Integer.parseInt(arr[1]));
+                values.put(customerFields[3], arr[2]);
+                values.put(customerFields[4], arr[3]);
+                values.put(customerFields[5], Double.parseDouble(arr[4]));
+                values.put(customerFields[6], arr[5]);
                 break;
             default:
         }
+        
+        String[] array;
+        
         return values;
     }
     
