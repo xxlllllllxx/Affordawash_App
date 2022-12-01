@@ -37,7 +37,7 @@ public class Login extends AppCompatActivity {
     
         if(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, 0)[0][0].equals("NO DATA!")) {
             if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234"})) {
-                Toast.makeText(getApplicationContext(), "\nDEFAULT SET!\nUSERNAME: Admin\nPASSWORD: Admin1234", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "\nDEFAULT SET!\nUSERNAME: Admin1234\nPASSWORD: Admin1234", Toast.LENGTH_LONG).show();
             }
         }
     }
