@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-//Edit from github
+
 public class Login extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     SharedPreferences preferences;
