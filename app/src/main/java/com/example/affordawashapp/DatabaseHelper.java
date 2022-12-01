@@ -14,11 +14,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TBLMACHINE = "tbl_machine";
     public static final String TBLCUSTOMER = "tbl_customer";
     
-    String[] managerFields = {"id", "manager_username", "manager_password"};
-    String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
-    String[] itemFields = {"id", "item_name", "item_quantity", "item_init_price", "item_lowest_price", "item_selling_price"};
-    String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
-    String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
+    public static final String[] managerFields = {"id", "manager_username", "manager_password"};
+    public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
+    public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_init_price", "item_lowest_price", "item_selling_price"};
+    public static final String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
+    public static final String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
     
     
     public DatabaseHelper(Context context){
@@ -27,11 +27,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE " + TBLMANAGER + "(id INTEGER PRIMARY KEY AUTOINCREMENT, manager_username TEXT, manager_password TEXT)");
-        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "(id INTEGER PRIMARY KEY AUTOINCREMENT, employee_username TEXT, employee_password TEXT, employee_salary DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLITEM + "(id INTEGER PRIMARY KEY AUTOINCREMENT, item_name TEXT, item_quantity INTEGER, item_init_price DOUBLE, item_lowest_price DOUBLE, item_selling_price DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLMACHINE + "(id INTEGER PRIMARY KEY AUTOINCREMENT, is_available BOOLEAN, washing BOOLEAN, drying BOOLEAN, washing_price DOUBLE, drying_price DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "(id INTEGER PRIMARY KEY AUTOINCREMENT, customer_alias TEXT, employee_id INTEGER, machine_id_list TEXT, item_id_list TEXT, transaction_payment DOUBLE, transaction_datetime TEXT)");
+        db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT)");
+        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" BOOLEAN, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" DOUBLE, "+machineFields[5]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
     }
     
     @Override
