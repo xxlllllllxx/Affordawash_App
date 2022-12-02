@@ -52,7 +52,7 @@ public class Manager extends AppCompatActivity {
             case R.id.logout:
                 intent.removeExtra("id");
                 intent.removeExtra("username");
-                intent = new Intent(getApplicationContext(), Login.class);
+                intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
