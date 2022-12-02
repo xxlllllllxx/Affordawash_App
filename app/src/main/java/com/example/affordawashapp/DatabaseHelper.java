@@ -24,7 +24,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
     public static final String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
     
-    
     public DatabaseHelper(Context context){
         super(context, DBNAME, null, 1);
     }
@@ -205,5 +204,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
     }
     
-    
+    //Employee methods
+    public int[][] unlist(String list){
+        String[] tmp = list.split(":");
+        int[][] pair = new int[tmp.length][2];
+        int ctr = 0;
+        for (String ss : tmp) {
+            String[] s = ss.split(" ");
+            pair[ctr][0] = Integer.parseInt(s[0]);
+            pair[ctr][1] = Integer.parseInt(s[1]);
+            ctr++;
+        }
+        return pair;
+    }
 }

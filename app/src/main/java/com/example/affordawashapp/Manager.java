@@ -48,6 +48,7 @@ public class Manager extends AppCompatActivity {
             case R.id.newWashingMachine:
                 break;
             case R.id.changePassword:
+                unpair();
                 break;
             case R.id.logout:
                 intent.removeExtra("id");
@@ -104,5 +105,14 @@ public class Manager extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    
+    private void unpair(){
+        int[][] pair = databaseHelper.unlist("1 2:2 2:4 3:7 15");
+        String str = "";
+        for (int[] ints : pair) {
+            str += ints[0] + " = " + ints[1] + "\n";
+        }
+        textView.setText(str);
     }
 }

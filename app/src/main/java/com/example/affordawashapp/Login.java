@@ -21,11 +21,7 @@ public class Login extends AppCompatActivity {
         etusername = (EditText) findViewById(R.id.etUsername);
         etpassword = (EditText) findViewById(R.id.etPassword);
     
-        if(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, 0)[0][0].equals("NO DATA!")) {
-            if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234"})) {
-                Toast.makeText(getApplicationContext(), "\nDEFAULT SET!\nUSERNAME: Admin1234\nPASSWORD: Admin1234", Toast.LENGTH_LONG).show();
-            }
-        }
+        
     }
     
     public void onClickLogin(View view){
@@ -48,6 +44,7 @@ public class Login extends AppCompatActivity {
                 intent.putExtra("id", user.id);
                 intent.putExtra("username", user.username);
                 startActivity(intent);
+                finish();
             }
         }
     }
