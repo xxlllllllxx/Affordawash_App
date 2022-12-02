@@ -17,13 +17,14 @@ import android.widget.TextView;
 public class Manager extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     TextView textView;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
         databaseHelper = new DatabaseHelper(Manager.this);
         textView = (TextView) findViewById(R.id.tvMan);
-        Intent intent = getIntent();
+        intent = getIntent();
         textView.setText(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0][1]);
     }
     
@@ -42,14 +43,18 @@ public class Manager extends AppCompatActivity {
                 this.addEmployee();
                 break;
             case R.id.newItem:
-                addEmployee();
+                addItem();
                 break;
             case R.id.newWashingMachine:
-                addEmployee();
                 break;
             case R.id.changePassword:
                 break;
             case R.id.logout:
+                intent.removeExtra("id");
+                intent.removeExtra("username");
+                intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 return false;
@@ -78,5 +83,26 @@ public class Manager extends AppCompatActivity {
         });
         builder.show();
         
+    }
+    private void addItem(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.add_item, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
+        builder.setView(view);
+    
+        builder.setPositiveButton("STOCK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }
