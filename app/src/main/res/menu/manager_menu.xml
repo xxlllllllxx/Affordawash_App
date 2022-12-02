@@ -9,13 +9,13 @@
         <menu>
             <item
                 android:id="@+id/newEmployee"
-                android:title="New Employee" />
+                android:title="Employee" />
             <item
                 android:id="@+id/newItem"
-                android:title="New Item" />
+                android:title="Item" />
             <item
                 android:id="@+id/newWashingMachine"
-                android:title="New Washing Machine" />
+                android:title="Washing Machine" />
         </menu>
     </item>
     <item

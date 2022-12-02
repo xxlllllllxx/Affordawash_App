@@ -1,13 +1,17 @@
 package com.example.affordawashapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class Manager extends AppCompatActivity {
@@ -34,7 +38,14 @@ public class Manager extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.add:
+            case R.id.newEmployee:
+                this.addEmployee();
+                break;
+            case R.id.newItem:
+                addEmployee();
+                break;
+            case R.id.newWashingMachine:
+                addEmployee();
                 break;
             case R.id.changePassword:
                 break;
@@ -44,5 +55,28 @@ public class Manager extends AppCompatActivity {
                 return false;
         }
         return false;
+    }
+    
+    private void addEmployee(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.add_employee, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
+        builder.setView(view);
+        
+        builder.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+        
     }
 }
