@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
                     sleep(5000);
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
+                    finish();
                 } catch (Exception e){
                     e.printStackTrace();
                 }
