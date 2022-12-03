@@ -20,16 +20,13 @@ import android.widget.Toast;
 
 public class Manager extends AppCompatActivity {
     DatabaseHelper databaseHelper;
-    TextView textView;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
         databaseHelper = new DatabaseHelper(Manager.this);
-        textView = (TextView) findViewById(R.id.tvMan);
         intent = getIntent();
-        textView.setText(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0][1]);
     }
     
     
@@ -140,6 +137,5 @@ public class Manager extends AppCompatActivity {
         for (int[] ints : pair) {
             str += ints[0] + " = " + ints[1] + "\n";
         }
-        textView.setText(str);
     }
 }
