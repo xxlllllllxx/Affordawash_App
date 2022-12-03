@@ -83,24 +83,22 @@ public class Manager extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText etusername = (EditText) view.findViewById(R.id.etEmployeeUsername);
-                EditText etpassword = (EditText) view.findViewById(R.id.etEmployeeUsername);
-                EditText etsalary = (EditText) view.findViewById(R.id.etEmployeeUsername);
+                EditText etpassword = (EditText) view.findViewById(R.id.etEmployeePassword);
+                EditText etsalary = (EditText) view.findViewById(R.id.etEmployeeSalary);
                 
-                if(((etusername.getText().length() == 0) || (etpassword.getText().length() == 0)) || (etsalary.getText().length() == 0)) {
+                if(etusername.getText().length() == 0 && etpassword.getText().length() == 0 && etsalary.getText().length() == 0) {
                     displayInfo("Fields cannot be empty");
-                    dialog.dismiss();
                 } else {
                     String username = etusername.getText().toString();
                     String password = etpassword.getText().toString();
                     String salary = etsalary.getText().toString();
                     if (databaseHelper.createData(databaseHelper.TBLEMPLOYEE, new String[]{username, password, salary})) {
                         displayInfo("Employee Information Saved");
-                        dialog.dismiss();
                     } else {
                         displayInfo("Employee Information not Saved");
-                        dialog.dismiss();
                     }
                 }
+                dialog.dismiss();
             }
         });
         
