@@ -4,4 +4,233 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Manager"/>
+    android:backgroundTint="@color/colorPrimary"
+    tools:context=".Manager">
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/wave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:srcCompat="@drawable/ic_round_account_circle_24"
+        app:tint="@color/colorLogo" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="40dp"
+        android:layout_height="46dp"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/tvManagerName"
+        app:srcCompat="@drawable/ic_baseline_bubble_chart_24" />
+
+    <TextView
+        android:id="@+id/tvManagerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="sans-serif-black"
+        android:text="REAL PROCESO"
+        android:textColor="@color/colorLogo"
+        android:textSize="34sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView10"
+        app:layout_constraintTop_toTopOf="@+id/imageView11" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AFFORDAWASH MANAGER"
+        android:textColor="@color/colorLogo"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toEndOf="@+id/imageView10"
+        app:layout_constraintTop_toBottomOf="@+id/tvManagerName" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/circle_edit"
+        android:backgroundTint="@color/colorLogo"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:tint="@color/colorAccent"
+        app:layout_constraintStart_toEndOf="@+id/tvManagerName"
+        app:layout_constraintTop_toTopOf="@+id/imageView11"
+        app:srcCompat="@drawable/ic_baseline_edit_50" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="5dp">
+
+            <Button
+                android:id="@+id/btnAddE"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle"
+                android:onClick="onClickButtons"
+                android:text="ADD EMPLOYEE"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddI"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle"
+                android:onClick="onClickButtons"
+                android:text="ADD ITEM"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddM"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle"
+                android:onClick="onClickButtons"
+                android:text="ADD MACHINE"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingHorizontal="5dp">
+
+            <Button
+                android:id="@+id/btnViewE"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle_2"
+                android:onClick="onClickButtons"
+                android:text="VIEW EMPLOYEES"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnViewI"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle_2"
+                android:onClick="onClickButtons"
+                android:text="VIEW ITEMS"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnViewM"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/half_circle_2"
+                android:onClick="onClickButtons"
+                android:text="VIEW MACHINES"
+                android:textColor="@color/colorLogo"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle_edit"
+            android:paddingVertical="15dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/colorLogo" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle_edit"
+            android:paddingVertical="15dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/colorLogo" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/circle_edit"
+            android:paddingVertical="15dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/colorLogo" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,27 +18,70 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/imageView5"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@drawable/wave"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/imageView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/etItemName"
+        android:id="@+id/etDryingP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@drawable/ic_baseline_attach_money_24"
+        android:drawableTint="@color/colorLogo"
+        android:ems="9"
+        android:hint="  Price"
+        android:inputType="number|numberDecimal"
+        android:padding="10dp"
+        android:textColor="@color/colorLogo"
+        android:textColorHint="@color/colorLogo"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMachineName" />
+
+    <CheckBox
+        android:id="@+id/cbDrying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="90dp"
+        android:buttonTint="@color/colorLogo"
+        android:checked="false"
+        android:text="DRYING"
+        android:textColor="@color/colorLogo"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMachineName" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/wave"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/etMachineName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_baseline_edit_24"
+        android:drawableLeft="@drawable/ic_baseline_electric_bolt_24"
         android:drawableTint="@color/colorLogo"
         android:ems="12"
-        android:hint="  Product Name"
+        android:hint="  Machine Name"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/colorLogo"
@@ -49,89 +92,33 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:id="@+id/etItemQuantity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="24dp"
-        android:drawableLeft="@drawable/ic_baseline_stock"
-        android:drawableTint="@color/colorLogo"
-        android:ems="12"
-        android:hint="  Stock Quantity"
-        android:inputType="number"
-        android:padding="10dp"
-        android:textColor="@color/colorLogo"
-        android:textColorHint="@color/colorLogo"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etItemName" />
-
-    <EditText
-        android:id="@+id/etItemCost"
+        android:id="@+id/etWashingP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
         android:drawableLeft="@drawable/ic_baseline_attach_money_24"
         android:drawableTint="@color/colorLogo"
         android:ems="9"
-        android:hint="  Cost"
+        android:hint="  Price"
         android:inputType="number|numberDecimal"
         android:padding="10dp"
         android:textColor="@color/colorLogo"
         android:textColorHint="@color/colorLogo"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etItemQuantity" />
-
-    <EditText
-        android:id="@+id/etItemLowestP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="30dp"
-        android:drawableLeft="@drawable/ic_baseline_monetization_on_24"
-        android:drawableTint="@color/colorLogo"
-        android:ems="9"
-        android:hint="  Lowest Price"
-        android:inputType="number|numberDecimal"
-        android:padding="10dp"
-        android:textColor="@color/colorLogo"
-        android:textColorHint="@color/colorLogo"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etItemCost" />
-
-    <EditText
-        android:id="@+id/etItemSellingP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="30dp"
-        android:drawableLeft="@drawable/ic_baseline_currency_exchange_24"
-        android:drawableTint="@color/colorLogo"
-        android:ems="9"
-        android:hint="  Selling Price"
-        android:inputType="number|numberDecimal"
-        android:padding="10dp"
-        android:textColor="@color/colorLogo"
-        android:textColorHint="@color/colorLogo"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etItemLowestP" />
+        app:layout_constraintTop_toBottomOf="@+id/etMachineName" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/etItemCost"
+        app:layout_constraintEnd_toStartOf="@+id/etWashingP"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etItemQuantity"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/cbDrying"
         app:srcCompat="@drawable/ic_baseline_bubble_chart_24" />
 
     <TextView
@@ -140,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:fontFamily="sans-serif-black"
-        android:text="ADD ITEM"
+        android:text="ADD WASHING MACHINE"
         android:textColor="@color/colorLogo"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -156,6 +143,21 @@
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="@+id/imageView7"
         app:srcCompat="@drawable/ic_baseline_bubble_chart_24" />
+
+    <CheckBox
+        android:id="@+id/cbWashing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="30dp"
+        android:buttonTint="@color/colorLogo"
+        android:checked="false"
+        android:text="WASHING"
+        android:textColor="@color/colorLogo"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMachineName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

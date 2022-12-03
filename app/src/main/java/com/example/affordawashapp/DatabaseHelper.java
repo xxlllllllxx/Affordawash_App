@@ -17,8 +17,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     public static final String[] managerFields = {"id", "manager_username", "manager_password"};
     public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
-    public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_init_price", "item_lowest_price", "item_selling_price"};
-    public static final String[] machineFields = {"id", "is_available", "washing", "drying", "washing_price", "drying_price"};
+    public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_cost", "item_lowest_price", "item_selling_price"};
+    public static final String[] machineFields = {"id", "machine_name", "is_available", "washing", "drying", "washing_price", "drying_price"};
     public static final String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
     
     public DatabaseHelper(Context context){
@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT)");
         db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" BOOLEAN, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" DOUBLE, "+machineFields[5]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
     }
     
@@ -68,11 +68,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(itemFields[5], Double.parseDouble(arr[4]));
                 break;
             case TBLMACHINE:
-                values.put(machineFields[1], Boolean.parseBoolean(arr[0]));
-                values.put(machineFields[2], Boolean.parseBoolean(arr[1]));
-                values.put(machineFields[3], Boolean.parseBoolean(arr[2]));
-                values.put(machineFields[4], Double.parseDouble(arr[3]));
-                values.put(machineFields[5], Double.parseDouble(arr[4]));
+                values.put(machineFields[1], arr[0]);
+                values.put(machineFields[2], true);
+                values.put(machineFields[3], Boolean.parseBoolean(arr[1]));
+                values.put(machineFields[4], Boolean.parseBoolean(arr[2]));
+                values.put(machineFields[5], Double.parseDouble(arr[3]));
+                values.put(machineFields[6], Double.parseDouble(arr[4]));
                 break;
             case TBLCUSTOMER:
                 values.put(customerFields[1], arr[0]);
@@ -108,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch(tbl){
             case TBLMANAGER: column = 3; break;
             case TBLEMPLOYEE: column = 4; break;
-            case TBLMACHINE: column = 6; break;
+            case TBLMACHINE: column = 7; break;
             case TBLITEM: column = 6; break;
             case TBLCUSTOMER: column = 7; break;
             default: column = 0;
@@ -155,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch(tbl){
             case TBLMANAGER: col = 3; break;
             case TBLEMPLOYEE: col = 4; break;
-            case TBLMACHINE: col = 6; break;
+            case TBLMACHINE: col = 7; break;
             case TBLITEM: col = 6; break;
             case TBLCUSTOMER: col = 7; break;
             default: col = 0;
@@ -214,4 +215,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return pair;
     }
+
 }
