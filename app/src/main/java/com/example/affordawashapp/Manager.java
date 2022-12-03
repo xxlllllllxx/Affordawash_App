@@ -121,7 +121,7 @@ public class Manager extends AppCompatActivity {
 
     private void addItem(){
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_item, null);
+        final View view = inflater.inflate(R.layout.add_item, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
         builder.setView(view);
     
