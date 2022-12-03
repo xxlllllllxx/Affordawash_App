@@ -111,6 +111,7 @@ public class Manager extends AppCompatActivity {
         builder.show();
         
     }
+
     private void addItem(){
         LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.add_item, null);

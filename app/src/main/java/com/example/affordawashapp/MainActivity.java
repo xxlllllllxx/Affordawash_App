@@ -18,9 +18,7 @@ public class MainActivity extends AppCompatActivity {
         //Display Default USERNAME and PASSWORD for Manager
         if(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, 0)[0][0].equals("NO DATA!")) {
             if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234"})) {
-                TextView welcome = (TextView) findViewById(R.id.tvWelcome);
                 TextView userlogin = (TextView) findViewById(R.id.tvUserlogin);
-                welcome.setText("WELCOME");
                 userlogin.setText("USERNAME: Admin1234\nPASSWORD: Admin1234");
                 millis = 5000;
             }
