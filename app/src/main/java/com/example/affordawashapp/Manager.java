@@ -58,7 +58,7 @@ public class Manager extends AppCompatActivity {
     
     private void displayInfo(String msg){
         Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.END | Gravity.TOP, 0, 60);
+        toast.setGravity(Gravity.END | Gravity.TOP, 0, 75);
         toast.show();
     }
 
