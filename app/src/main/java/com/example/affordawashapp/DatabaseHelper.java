@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.NonNull;
-
-import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DBNAME = "db_affordawash";

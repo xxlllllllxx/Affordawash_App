@@ -7,7 +7,7 @@
     android:padding="30dp">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/etEmployeeUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="12"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/etEmployeePassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -29,17 +29,17 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmployeeUsername" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
+        android:id="@+id/etEmployeeSalary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Salary"
-        android:inputType="number"
+        android:hint="Initial Salary"
+        android:inputType="number|numberDecimal"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmployeePassword" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Manager extends AppCompatActivity {
     DatabaseHelper databaseHelper;
@@ -63,16 +67,40 @@ public class Manager extends AppCompatActivity {
         return false;
     }
     
+    private void displayInfo(String msg){
+        Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.END | Gravity.TOP, 0, 40);
+        toast.show();
+    }
+    
     private void addEmployee(){
         LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_employee, null);
+        final View view = inflater.inflate(R.layout.add_employee, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
         builder.setView(view);
         
         builder.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                EditText etusername = (EditText) view.findViewById(R.id.etEmployeeUsername);
+                EditText etpassword = (EditText) view.findViewById(R.id.etEmployeeUsername);
+                EditText etsalary = (EditText) view.findViewById(R.id.etEmployeeUsername);
+                
+                if(((etusername.getText().length() == 0) || (etpassword.getText().length() == 0)) || (etsalary.getText().length() == 0)) {
+                    displayInfo("Fields cannot be empty");
+                    dialog.dismiss();
+                } else {
+                    String username = etusername.getText().toString();
+                    String password = etpassword.getText().toString();
+                    String salary = etsalary.getText().toString();
+                    if (databaseHelper.createData(databaseHelper.TBLEMPLOYEE, new String[]{username, password, salary})) {
+                        displayInfo("Employee Information Saved");
+                        dialog.dismiss();
+                    } else {
+                        displayInfo("Employee Information not Saved");
+                        dialog.dismiss();
+                    }
+                }
             }
         });
         

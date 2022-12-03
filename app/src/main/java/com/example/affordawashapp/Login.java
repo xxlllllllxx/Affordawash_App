@@ -1,5 +1,6 @@
 package com.example.affordawashapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -50,6 +51,6 @@ public class Login extends AppCompatActivity {
     }
     
     public void onClickForgot(View view){
-        //if
+    
     }
 }
