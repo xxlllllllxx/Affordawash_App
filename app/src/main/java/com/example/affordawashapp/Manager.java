@@ -94,6 +94,10 @@ public class Manager extends AppCompatActivity {
             case R.id.ibEdit:
                 toggleManagerInfo();
                 break;
+            case R.id.btnViewE:
+                Intent intent = new Intent(Manager.this, ViewActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
