@@ -58,8 +58,18 @@ public class Manager extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case  R.id.viewTransactions:
+                if(databaseHelper.getCount(DatabaseHelper.TBLCUSTOMER, "id") > 0) {
+                    Intent intent = new Intent(Manager.this, ViewActivity.class);
+                    intent.putExtra("table", DatabaseHelper.TBLCUSTOMER);
+                    intent.putExtra("resource", R.layout.list_customer);
+                    startActivity(intent);
+                } else {
+                    displayInfo("Transaction Table is Empty");
+                }
+                break;
             case R.id.changePassword:
-                test();
+                unpair();
                 break;
             case R.id.logout:
                 intent.removeExtra("id");
@@ -81,7 +91,7 @@ public class Manager extends AppCompatActivity {
     }
 
     public void onClickButtons(View view){
-        Intent intent = new Intent(Manager.this, ViewActivity.class);
+        intent = new Intent(Manager.this, ViewActivity.class);
         String tbl = "";
         switch (view.getId()){
             case R.id.btnAddE:
@@ -229,7 +239,6 @@ public class Manager extends AppCompatActivity {
                     if (etMachineName.getText().toString().equals("") || (!cbWash.isChecked() && !cbDry.isChecked())) {
                         displayInfo("Fields cannot be empty");
                     } else {
-                        test();
                         String machineName = etMachineName.getText().toString();
                         String washing = (cbWash.isChecked())?"true" : "false";
                         String drying = (cbDry.isChecked())?"true" : "false";
@@ -260,28 +269,15 @@ public class Manager extends AppCompatActivity {
 
     }
     
-    private void unpair(){
-        int[][] pair = databaseHelper.unlist("1 2:2 2:4 3:7 15");
-        String str = "";
-        for (int[] ints : pair) {
-            str += ints[0] + " = " + ints[1] + "\n";
-        }
+    private void unpair() {
+        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Jordan", "2", "1 65:2 65", "1 3 24:2 1 8.4:3 1 10", "172", "Dec 5, 2022 - 6:12"});
     }
 
-    private void test(){
-//        String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLMACHINE, 0);
-//        String str = "";
-//        for (String[] s : data) {
-//            for (String s1 : s) {
-//                str += s1 + " ";
-//            }
-//            str += "\n";
-//        }
-        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Lewis", "1", "1:2:3", "1 2:2 1", "120.0", "Dec 12, 2022"});
-        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Arwyn", "2", "1:2:3", "1 2:2 1", "140.0", "Dec 13, 2022"});
-        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Diero", "1", "1:2:3", "1 2:2 3", "130.0", "Dec 13, 2022"});
-
-
+    private void changePassword(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.change_password, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
+        builder.setView(view);
     }
     
     private void updateInfo(){

@@ -1,8 +1,6 @@
 package com.example.affordawashapp;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.Locale;
 
 public class CustomViewAdapter extends ArrayAdapter<String> {
     Context context;
@@ -48,7 +44,7 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
                 ((TextView) convertView.findViewById(R.id.tvEmUsername)).setText(data[position][1]);
                 ((TextView) convertView.findViewById(R.id.tvEmWholename)).setText(data[position][3]);
                 ((TextView) convertView.findViewById(R.id.tvCustomerCount)).setText(data[position][2]);
-                ((TextView) convertView.findViewById(R.id.tvEmSalary)).setText(data[position][4]);
+                ((EditText) convertView.findViewById(R.id.etEmSalary)).setText(data[position][4]);
                 break;
             case DatabaseHelper.TBLMACHINE:
                 ((TextView) convertView.findViewById(R.id.tvMachineName)).setText(data[position][1]);
@@ -56,6 +52,15 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
                 ((Switch) convertView.findViewById(R.id.swDrying)).setChecked(data[position][4].equals("1"));
                 ((EditText) convertView.findViewById(R.id.etWashingPrice)).setText(data[position][5]);
                 ((EditText) convertView.findViewById(R.id.etDryingPrice)).setText(data[position][6]);
+                break;
+            case DatabaseHelper.TBLCUSTOMER:
+                ((TextView) convertView.findViewById(R.id.tvCustomerAlias)).setText(data[position][1]);
+                ((TextView) convertView.findViewById(R.id.tvCEmployeeId)).setText(data[position][2]);
+                ((TextView) convertView.findViewById(R.id.tvMachineUsed)).setText(data[position][3]);
+                ((TextView) convertView.findViewById(R.id.tvItemsBought)).setText(data[position][4]);
+                ((TextView) convertView.findViewById(R.id.tvTotal)).setText(data[position][5]);
+                ((TextView) convertView.findViewById(R.id.tvDateTime)).setText(data[position][6]);
+                break;
             default:
         }
         return convertView;

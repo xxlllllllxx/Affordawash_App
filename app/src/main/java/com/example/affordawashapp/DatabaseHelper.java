@@ -205,29 +205,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
     }
     
-    //Employee methods
-    public int[][] unlist(String list){
-        String[] tmp = list.split(":");
-        int[][] pair = new int[tmp.length][2];
-        int ctr = 0;
-        for (String ss : tmp) {
-            String[] s = ss.split(" ");
-            pair[ctr][0] = Integer.parseInt(s[0]);
-            pair[ctr][1] = Integer.parseInt(s[1]);
-            ctr++;
+    public String unlistItem(String list){
+        try {
+            String[] tmp = list.split(":");
+            String str = "";
+            for (int i = 0; i < tmp.length; i++) {
+                String[] data = tmp[i].split(" ");
+                str += data[1] + " : " + getColumnField(TBLITEM, itemFields[1], data[0]) + " - " + data[2] + "\n";
+            }
+            return str;
+        }catch (Exception e){
+            return "EXEPRIONN IN UNLISTITEM";
         }
-        return pair;
+    }
+    
+    public String unlistMachine(String list){
+        try{
+        String[] tmp = list.split(":");
+        String str = "";
+        for (int i = 0; i < tmp.length; i++) {
+            String[] data = tmp[i].split(" ");
+            str += getColumnField(TBLMACHINE, machineFields[1], data[0]) + " - " + data[1] + "\n";
+        }
+        return str;
+        }catch (Exception e){
+            return "EXEPRIONN IN UNLISTITEM";
+        }
     }
     
     //Other Methods
+    public String getColumnField(String tbl, String column, String id){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        Cursor res = liteDatabase.rawQuery("SELECT " + column + " FROM " + tbl + " WHERE id = '" + id + "'", null);
+        while (res.moveToNext()) {
+                return res.getString(0);
+            }
+        return "NO DATA!";
+    }
+    
     public int getCount(String tbl, String field){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         return liteDatabase.rawQuery("SELECT DISTINCT "+ field +" from " + tbl, null).getCount();
     }
 
-    public int getCountSame(String tbl, String field, String identifier){
+    public int getCountSame(String tbl, String column, String identifier){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
-        Cursor res = liteDatabase.rawQuery("SELECT COUNT(*) FROM "+tbl+" WHERE "+ field+" = '"+identifier+"'", null);
+        Cursor res = liteDatabase.rawQuery("SELECT COUNT(*) FROM "+tbl+" WHERE "+ column+" = '"+identifier+"'", null);
         while (res.moveToNext()){
             return Integer.parseInt(res.getString(0));
         }

@@ -5,4 +5,5 @@
     <color name="colorAccent">#0099ff</color>
     <color name="colorLogo">#eeeeee</color>
     <color name="colorLogoBackground">#ff00ff</color>
+    <color name="color_green">#07FF11</color>
 </resources>
