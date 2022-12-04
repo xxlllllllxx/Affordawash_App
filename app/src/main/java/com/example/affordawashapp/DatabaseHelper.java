@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TBLMACHINE = "tbl_machine";
     public static final String TBLCUSTOMER = "tbl_customer";
     
-    public static final String[] managerFields = {"id", "manager_username", "manager_password"};
+    public static final String[] managerFields = {"id", "manager_username", "manager_password", "manager_whole_name", "manager_title"};
     public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
     public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_cost", "item_lowest_price", "item_selling_price"};
     public static final String[] machineFields = {"id", "machine_name", "is_available", "washing", "drying", "washing_price", "drying_price"};
@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT)");
+        db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT, "+managerFields[3]+" TEXT, "+managerFields[4]+" TEXT)");
         db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
@@ -54,6 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case TBLMANAGER:
                 values.put(managerFields[1], arr[0]);
                 values.put(managerFields[2], arr[1]);
+                values.put(managerFields[3], arr[2]);
+                values.put(managerFields[4], arr[3]);
                 break;
             case TBLEMPLOYEE:
                 values.put(employeeFields[1], arr[0]);
@@ -107,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         int column = 0;
         switch(tbl){
-            case TBLMANAGER: column = 3; break;
+            case TBLMANAGER: column = 5; break;
             case TBLEMPLOYEE: column = 4; break;
             case TBLMACHINE: column = 7; break;
             case TBLITEM: column = 6; break;
@@ -154,7 +156,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = liteDatabase.rawQuery("SELECT * FROM " + tbl + " WHERE " + column + " = '" + data + "'", null);
         int col = 0;
         switch(tbl){
-            case TBLMANAGER: col = 3; break;
+            case TBLMANAGER: col = 5; break;
             case TBLEMPLOYEE: col = 4; break;
             case TBLMACHINE: col = 7; break;
             case TBLITEM: col = 6; break;
@@ -215,6 +217,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return pair;
     }
-
     
+    //Other Methods
+    public int getCount(String tbl, String field){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        return liteDatabase.rawQuery("SELECT DISTINCT "+ field +" from " + tbl, null).getCount();
+    }
+    
+    public boolean updateString(String tbl, String field, String data, int id){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(field, data);
+        long result = liteDatabase.update(tbl, values, "id = ?", new String[]{String.valueOf(id)});
+        return !(result <= -1);
+    }
 }

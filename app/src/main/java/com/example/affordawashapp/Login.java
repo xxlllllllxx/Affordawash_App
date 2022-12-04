@@ -21,7 +21,6 @@ public class Login extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(Login.this);
         etusername = (EditText) findViewById(R.id.etUsername);
         etpassword = (EditText) findViewById(R.id.etPassword);
-    
         
     }
     

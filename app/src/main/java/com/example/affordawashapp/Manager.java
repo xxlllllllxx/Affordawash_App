@@ -3,10 +3,12 @@ package com.example.affordawashapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Constraints;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,18 +17,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class Manager extends AppCompatActivity {
     DatabaseHelper databaseHelper;
+    String[] managerData;
     Intent intent;
+    TextView tvName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
         databaseHelper = new DatabaseHelper(Manager.this);
         intent = getIntent();
+        tvName = (TextView) findViewById(R.id.tvManagerName);
+        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
+        try {
+            managerData = databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0];
+            tvName.setText(managerData[3].toUpperCase());
+            tvTitle.setText("AFFORDAWASH "+ managerData[4].toUpperCase());
+        } catch (Exception e){
+            finish();
+        }
+        updateInfo();
     }
     
     
@@ -73,7 +91,11 @@ public class Manager extends AppCompatActivity {
             case R.id.btnAddM:
                 addMachine();
                 break;
+            case R.id.ibEdit:
+                toggleManagerInfo();
+                break;
             default:
+                break;
         }
     }
     
@@ -106,6 +128,7 @@ public class Manager extends AppCompatActivity {
                     displayInfo("Fields cannot be empty");
                 }
                 dialog.dismiss();
+                updateInfo();
             }
         });
         
@@ -152,6 +175,7 @@ public class Manager extends AppCompatActivity {
                     displayInfo("Fields cannot be empty");
                 }
                 dialog.dismiss();
+                updateInfo();
             }
         });
     
@@ -199,6 +223,7 @@ public class Manager extends AppCompatActivity {
 
                 }
                 dialog.dismiss();
+                updateInfo();
             }
         });
 
@@ -230,5 +255,33 @@ public class Manager extends AppCompatActivity {
             str += "\n";
         }
     }
-
+    
+    private void updateInfo(){
+        TextView tvECount = (TextView) findViewById(R.id.tvEmployeeCount);
+        TextView tvICount = (TextView) findViewById(R.id.tvItemCount);
+        TextView tvMCount = (TextView) findViewById(R.id.tvMachineCount);
+        
+        tvECount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLEMPLOYEE, DatabaseHelper.employeeFields[0]));
+        tvICount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLITEM, DatabaseHelper.itemFields[0]));
+        tvMCount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLMACHINE, DatabaseHelper.machineFields[0]));
+        
+    }
+    
+    private void toggleManagerInfo(){
+//        LinearLayout.LayoutParams params;
+//
+//        if(true) {
+//            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics()));
+//            tvName.setEnabled(true);
+//        } else {
+//            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics()));
+//            if(true) {
+//                if (databaseHelper.updateString(DatabaseHelper.TBLMANAGER, DatabaseHelper.managerFields[3], tvName.getText().toString(), Integer.parseInt(managerData[0]))) {
+//                    displayInfo("Information Updated");
+//                }
+//            }
+//        }
+//        ImageView imageView = (ImageView) findViewById(R.id.ivExpand);
+//        imageView.setLayoutParams(params);
+    }
 }

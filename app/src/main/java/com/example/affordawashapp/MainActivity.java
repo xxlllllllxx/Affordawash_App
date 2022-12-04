@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
-    int millis = 0;
+    int millis = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         
         //Display Default USERNAME and PASSWORD for Manager
         if(databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, 0)[0][0].equals("NO DATA!")) {
-            if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234"})) {
+            if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234", "Real Proceso", "CEO"})) {
                 TextView userlogin = (TextView) findViewById(R.id.tvUserlogin);
                 userlogin.setText("USERNAME: Admin1234\nPASSWORD: Admin1234");
                 millis = 5000;

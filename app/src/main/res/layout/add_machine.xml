@@ -84,7 +84,7 @@
         android:drawablePadding="5dp"
         android:drawableTint="@color/colorLogo"
         android:ems="12"
-        android:hint="  Machine Name"
+        android:hint="  Machine Identifier"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/colorLogo"
