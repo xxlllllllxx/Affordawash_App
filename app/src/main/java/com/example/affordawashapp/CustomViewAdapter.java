@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
 public class CustomViewAdapter extends ArrayAdapter<String> {
     Context context;
     String tbl;

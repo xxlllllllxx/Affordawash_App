@@ -93,9 +93,6 @@ public class Manager extends AppCompatActivity {
             case R.id.btnAddM:
                 addMachine();
                 break;
-            case R.id.ibEdit:
-                toggleManagerInfo();
-                break;
             case R.id.btnViewE:
                 intent.putExtra("table", DatabaseHelper.TBLEMPLOYEE);
                 intent.putExtra("resource", R.layout.list_employee);
@@ -296,23 +293,5 @@ public class Manager extends AppCompatActivity {
         tvICount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLITEM, DatabaseHelper.itemFields[0]));
         tvMCount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLMACHINE, DatabaseHelper.machineFields[0]));
         
-    }
-    
-    private void toggleManagerInfo(){
-//        LinearLayout.LayoutParams params;
-//
-//        if(true) {
-//            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics()));
-//            tvName.setEnabled(true);
-//        } else {
-//            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics()));
-//            if(true) {
-//                if (databaseHelper.updateString(DatabaseHelper.TBLMANAGER, DatabaseHelper.managerFields[3], tvName.getText().toString(), Integer.parseInt(managerData[0]))) {
-//                    displayInfo("Information Updated");
-//                }
-//            }
-//        }
-//        ImageView imageView = (ImageView) findViewById(R.id.ivExpand);
-//        imageView.setLayoutParams(params);
     }
 }
