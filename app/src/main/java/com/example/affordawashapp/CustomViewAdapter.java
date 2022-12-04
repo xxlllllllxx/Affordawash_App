@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,10 +52,10 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
                 break;
             case DatabaseHelper.TBLMACHINE:
                 ((TextView) convertView.findViewById(R.id.tvMachineName)).setText(data[position][1]);
-                ((TextView) convertView.findViewById(R.id.tvWashing)).setText(data[position][3]);
-                ((TextView) convertView.findViewById(R.id.tvDrying)).setText(data[position][4]);
-                ((TextView) convertView.findViewById(R.id.tvWashingPrice)).setText(data[position][5]);
-                ((TextView) convertView.findViewById(R.id.tvDryingPrice)).setText(data[position][6]);
+                ((Switch) convertView.findViewById(R.id.swWashing)).setChecked(data[position][3].equals("1"));
+                ((Switch) convertView.findViewById(R.id.swDrying)).setChecked(data[position][4].equals("1"));
+                ((EditText) convertView.findViewById(R.id.etWashingPrice)).setText(data[position][5]);
+                ((EditText) convertView.findViewById(R.id.etDryingPrice)).setText(data[position][6]);
             default:
         }
         return convertView;
