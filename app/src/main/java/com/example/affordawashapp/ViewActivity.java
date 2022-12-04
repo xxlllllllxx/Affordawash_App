@@ -13,7 +13,7 @@ public class ViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
         databaseHelper = new DatabaseHelper(ViewActivity.this);
-        String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLITEM, 0);
+        String[][] data = databaseHelper.retrieveData(getIntent().getStringExtra("table"), 0);
         ListView list = (ListView) findViewById(R.id.listView);
         if(data[0][0].equals("NO DATA!")){
            finish();
@@ -22,8 +22,12 @@ public class ViewActivity extends AppCompatActivity {
             for (int i = 0; i < data.length; i++) {
                 id[i] = data[i][0];
             }
-            CustomViewAdapter adapter = new CustomViewAdapter(ViewActivity.this, R.layout.list_item, DatabaseHelper.TBLITEM, data, id);
-            list.setAdapter(adapter);
+            try {
+                CustomViewAdapter adapter = new CustomViewAdapter(ViewActivity.this, getIntent().getIntExtra("resource", -1), getIntent().getStringExtra("table"), data, id);
+                list.setAdapter(adapter);
+            } catch (Exception e){
+                finish();
+            }
         }
     }
 }

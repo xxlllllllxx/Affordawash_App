@@ -81,6 +81,7 @@ public class Manager extends AppCompatActivity {
     }
 
     public void onClickButtons(View view){
+        Intent intent = new Intent(Manager.this, ViewActivity.class);
         switch (view.getId()){
             case R.id.btnAddE:
                 addEmployee();
@@ -95,7 +96,18 @@ public class Manager extends AppCompatActivity {
                 toggleManagerInfo();
                 break;
             case R.id.btnViewE:
-                Intent intent = new Intent(Manager.this, ViewActivity.class);
+                intent.putExtra("table", DatabaseHelper.TBLEMPLOYEE);
+                intent.putExtra("resouce", -1);
+                startActivity(intent);
+                break;
+            case R.id.btnViewI:
+                intent.putExtra("table", DatabaseHelper.TBLITEM);
+                intent.putExtra("resouce", R.layout.list_item);
+                startActivity(intent);
+                break;
+            case R.id.btnViewM:
+                intent.putExtra("table", DatabaseHelper.TBLMACHINE);
+                intent.putExtra("resouce", -1);
                 startActivity(intent);
                 break;
             default:
