@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,10 +38,10 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
         switch (tbl){
             case DatabaseHelper.TBLITEM:
                 ((TextView) convertView.findViewById(R.id.tvItemName)).setText(data[position][1]);
-                ((TextView) convertView.findViewById(R.id.tvItemQuantity)).setText(data[position][2]);
-                ((TextView) convertView.findViewById(R.id.tvItemCost)).setText(data[position][3]);
-                ((TextView) convertView.findViewById(R.id.tvItemLowestPrice)).setText(data[position][4]);
-                ((TextView) convertView.findViewById(R.id.tvItemSellingPrice)).setText(data[position][5]);
+                ((EditText) convertView.findViewById(R.id.etLsItemQuantity)).setText(data[position][2]);
+                ((EditText) convertView.findViewById(R.id.etLsItemCost)).setText(data[position][3]);
+                ((EditText) convertView.findViewById(R.id.etLsItemLP)).setText(data[position][4]);
+                ((EditText) convertView.findViewById(R.id.etLsItemSP)).setText(data[position][5]);
                 break;
             case DatabaseHelper.TBLEMPLOYEE:
                 ((TextView) convertView.findViewById(R.id.tvEmUsername)).setText(data[position][1]);
