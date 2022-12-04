@@ -40,6 +40,18 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
                 ((TextView) convertView.findViewById(R.id.tvItemLowestPrice)).setText(data[position][4]);
                 ((TextView) convertView.findViewById(R.id.tvItemSellingPrice)).setText(data[position][5]);
                 break;
+            case DatabaseHelper.TBLEMPLOYEE:
+                ((TextView) convertView.findViewById(R.id.tvEmUsername)).setText(data[position][1]);
+                ((TextView) convertView.findViewById(R.id.tvEmWholename)).setText(data[position][3]);
+                ((TextView) convertView.findViewById(R.id.tvCustomerCount)).setText(data[position][2]);
+                ((TextView) convertView.findViewById(R.id.tvEmSalary)).setText(data[position][4]);
+                break;
+            case DatabaseHelper.TBLMACHINE:
+                ((TextView) convertView.findViewById(R.id.tvMachineName)).setText(data[position][1]);
+                ((TextView) convertView.findViewById(R.id.tvWashing)).setText(data[position][3]);
+                ((TextView) convertView.findViewById(R.id.tvDrying)).setText(data[position][4]);
+                ((TextView) convertView.findViewById(R.id.tvWashingPrice)).setText(data[position][5]);
+                ((TextView) convertView.findViewById(R.id.tvDryingPrice)).setText(data[position][6]);
             default:
         }
         return convertView;

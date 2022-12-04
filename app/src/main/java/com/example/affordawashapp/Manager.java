@@ -82,6 +82,7 @@ public class Manager extends AppCompatActivity {
 
     public void onClickButtons(View view){
         Intent intent = new Intent(Manager.this, ViewActivity.class);
+        String tbl = "";
         switch (view.getId()){
             case R.id.btnAddE:
                 addEmployee();
@@ -97,21 +98,28 @@ public class Manager extends AppCompatActivity {
                 break;
             case R.id.btnViewE:
                 intent.putExtra("table", DatabaseHelper.TBLEMPLOYEE);
-                intent.putExtra("resouce", -1);
-                startActivity(intent);
+                intent.putExtra("resource", R.layout.list_employee);
+                tbl = DatabaseHelper.TBLEMPLOYEE;
                 break;
             case R.id.btnViewI:
                 intent.putExtra("table", DatabaseHelper.TBLITEM);
-                intent.putExtra("resouce", R.layout.list_item);
-                startActivity(intent);
+                intent.putExtra("resource", R.layout.list_item);
+                tbl = DatabaseHelper.TBLITEM;
                 break;
             case R.id.btnViewM:
                 intent.putExtra("table", DatabaseHelper.TBLMACHINE);
-                intent.putExtra("resouce", -1);
-                startActivity(intent);
+                intent.putExtra("resource", R.layout.list_machine);
+                tbl = DatabaseHelper.TBLMACHINE;
                 break;
             default:
                 break;
+        }
+        if(!tbl.equals("")) {
+            if(databaseHelper.getCount(tbl, "id") > 0) {
+                startActivity(intent);
+            } else {
+                displayInfo("Selected view Empty");
+            }
         }
     }
     
@@ -124,17 +132,19 @@ public class Manager extends AppCompatActivity {
         builder.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                EditText etWholename = (EditText) view.findViewById(R.id.etEmployeeWholeName);
                 EditText etusername = (EditText) view.findViewById(R.id.etEmployeeUsername);
                 EditText etpassword = (EditText) view.findViewById(R.id.etEmployeePassword);
                 EditText etsalary = (EditText) view.findViewById(R.id.etEmployeeSalary);
                 try {
-                    if (etusername.getText().toString().length() == 0 || etpassword.getText().toString().length() == 0 || etsalary.getText().toString().length() == 0) {
+                    if (etWholename.getText().length() == 0 || etusername.getText().toString().length() == 0 || etpassword.getText().toString().length() == 0 || etsalary.getText().toString().length() == 0) {
                         displayInfo("Fields cannot be empty");
                     } else {
+                        String wholename = etWholename.getText().toString();
                         String username = etusername.getText().toString();
                         String password = etpassword.getText().toString();
                         String salary = etsalary.getText().toString();
-                        if (databaseHelper.createData(databaseHelper.TBLEMPLOYEE, new String[]{username, password, salary})) {
+                        if (databaseHelper.createData(databaseHelper.TBLEMPLOYEE, new String[]{username, password, wholename, salary})) {
                             displayInfo("Employee Information Saved");
                         } else {
                             displayInfo("Employee Information not Saved");
@@ -262,14 +272,19 @@ public class Manager extends AppCompatActivity {
     }
 
     private void test(){
-        String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLMACHINE, 0);
-        String str = "";
-        for (String[] s : data) {
-            for (String s1 : s) {
-                str += s1 + " ";
-            }
-            str += "\n";
-        }
+//        String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLMACHINE, 0);
+//        String str = "";
+//        for (String[] s : data) {
+//            for (String s1 : s) {
+//                str += s1 + " ";
+//            }
+//            str += "\n";
+//        }
+        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Lewis", "1", "1:2:3", "1 2:2 1", "120.0", "Dec 12, 2022"});
+        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Arwyn", "2", "1:2:3", "1 2:2 1", "140.0", "Dec 13, 2022"});
+        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Diero", "1", "1:2:3", "1 2:2 3", "130.0", "Dec 13, 2022"});
+
+
     }
     
     private void updateInfo(){

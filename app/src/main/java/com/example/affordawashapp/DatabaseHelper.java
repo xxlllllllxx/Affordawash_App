@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TBLCUSTOMER = "tbl_customer";
     
     public static final String[] managerFields = {"id", "manager_username", "manager_password", "manager_whole_name", "manager_title"};
-    public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_salary"};
+    public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_whole_name", "employee_salary"};
     public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_cost", "item_lowest_price", "item_selling_price"};
     public static final String[] machineFields = {"id", "machine_name", "is_available", "washing", "drying", "washing_price", "drying_price"};
     public static final String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
@@ -24,11 +24,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context){
         super(context, DBNAME, null, 1);
     }
-    
+
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT, "+managerFields[3]+" TEXT, "+managerFields[4]+" TEXT)");
-        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" TEXT, "+employeeFields[4]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
@@ -60,7 +60,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case TBLEMPLOYEE:
                 values.put(employeeFields[1], arr[0]);
                 values.put(employeeFields[2], arr[1]);
-                values.put(employeeFields[3], Double.parseDouble(arr[2]));
+                values.put(employeeFields[3], arr[2]);
+                values.put(employeeFields[4], Double.parseDouble(arr[3]));
                 break;
             case TBLITEM:
                 values.put(itemFields[1], arr[0]);
@@ -110,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int column = 0;
         switch(tbl){
             case TBLMANAGER: column = 5; break;
-            case TBLEMPLOYEE: column = 4; break;
+            case TBLEMPLOYEE: column = 5; break;
             case TBLMACHINE: column = 7; break;
             case TBLITEM: column = 6; break;
             case TBLCUSTOMER: column = 7; break;
@@ -157,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int col = 0;
         switch(tbl){
             case TBLMANAGER: col = 5; break;
-            case TBLEMPLOYEE: col = 4; break;
+            case TBLEMPLOYEE: col = 5; break;
             case TBLMACHINE: col = 7; break;
             case TBLITEM: col = 6; break;
             case TBLCUSTOMER: col = 7; break;
@@ -223,6 +224,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         return liteDatabase.rawQuery("SELECT DISTINCT "+ field +" from " + tbl, null).getCount();
     }
+
+    public int getCountSame(String tbl, String field, String identifier){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        Cursor res = liteDatabase.rawQuery("SELECT COUNT(*) FROM "+tbl+" WHERE "+ field+" = '"+identifier+"'", null);
+        while (res.moveToNext()){
+            return Integer.parseInt(res.getString(0));
+        }
+        return 0;
+    }
     
     public boolean updateString(String tbl, String field, String data, int id){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
@@ -232,3 +242,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return !(result <= -1);
     }
 }
+
+

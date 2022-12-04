@@ -31,12 +31,32 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
+        android:id="@+id/etEmployeeWholeName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/colorLogo"
+        android:ems="12"
+        android:hint="  Employee Whole Name"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textColor="@color/colorLogo"
+        android:textColorHint="@color/colorLogo"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
         android:id="@+id/etEmployeeUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
         android:drawablePadding="5dp"
         android:drawableTint="@color/colorLogo"
         android:ems="12"
@@ -48,7 +68,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmployeeWholeName" />
 
     <EditText
         android:id="@+id/etEmployeePassword"
