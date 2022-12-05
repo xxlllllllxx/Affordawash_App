@@ -23,6 +23,7 @@ public class Manager extends AppCompatActivity {
     String[] managerData;
     Intent intent;
     TextView tvName;
+    TextView tvTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +31,7 @@ public class Manager extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(Manager.this);
         intent = getIntent();
         tvName = (TextView) findViewById(R.id.tvManagerName);
-        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
-        try {
-            managerData = databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0];
-            tvName.setText(managerData[3].toUpperCase());
-            tvTitle.setText("AFFORDAWASH "+ managerData[4].toUpperCase());
-        } catch (Exception e){
-            finish();
-        }
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
         updateInfo();
     }
 
@@ -307,6 +301,13 @@ public class Manager extends AppCompatActivity {
     }
     
     private void updateInfo(){
+        try {
+            managerData = databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, intent.getIntExtra("id", 0))[0];
+            tvName.setText(managerData[3].toUpperCase());
+            tvTitle.setText("AFFORDAWASH "+ managerData[4].toUpperCase());
+        } catch (Exception e){
+            finish();
+        }
         TextView tvECount = (TextView) findViewById(R.id.tvEmployeeCount);
         TextView tvICount = (TextView) findViewById(R.id.tvItemCount);
         TextView tvMCount = (TextView) findViewById(R.id.tvMachineCount);
@@ -337,12 +338,41 @@ public class Manager extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.profile, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
         builder.setView(view);
+        int id = getIntent().getIntExtra("id", 1);
+        EditText etWholename = (EditText) view.findViewById(R.id.etMname);
+        EditText etUsername = (EditText) view.findViewById(R.id.etMUsername);
+        EditText etTitle = (EditText) view.findViewById(R.id.etMTitle);
+        try {
+            String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, id);
+            if (data[0][0].equals("NO DATA!")) {
+                displayInfo("No data!");
+            } else {
+                etWholename.setText(data[0][3]);
+                etUsername.setText(data[0][1]);
+                etTitle.setText(data[0][4]);
+            }
+        }catch (Exception e){
+            displayInfo("No data 2");
+        }
+
         builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String wholename = ((EditText) view.findViewById(R.id.etMname)).getText().toString();
-                String username = ((EditText) view.findViewById(R.id.etMUsername)).getText().toString();
-                String title = ((EditText) view.findViewById(R.id.etMTitle)).getText().toString();
+                String wholename = etWholename.getText().toString();
+                String username = etUsername.getText().toString();
+                String title = etTitle.getText().toString();
+                try {
+                    if (databaseHelper.updateString(DatabaseHelper.TBLMANAGER, DatabaseHelper.managerFields[1], username, id)
+                            && databaseHelper.updateString(DatabaseHelper.TBLMANAGER, DatabaseHelper.managerFields[3], wholename, id)
+                            && databaseHelper.updateString(DatabaseHelper.TBLMANAGER, DatabaseHelper.managerFields[4], title, id)) {
+                        displayInfo("Profile Updated");
+                        updateInfo();
+                    } else {
+                        displayInfo("Changes not saved");
+                    }
+                } catch (Exception e){
+                    displayInfo("Changes not saved 2");
+                }
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

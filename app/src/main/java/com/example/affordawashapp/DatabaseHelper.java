@@ -142,7 +142,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean deleteData(String tbl, int id){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         long result = liteDatabase.delete(tbl,"id = ?", new String[]{String.valueOf(id)});
-        return (!(result <= -1)) && (id > 0);
+        return (!(result <= 0)) && (id > 0);
 }
 
     //SEARCH ALGORITHM FOR ANY COLUMN OF ANY TABLE
@@ -256,7 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(field, data);
         long result = liteDatabase.update(tbl, values, "id = ?", new String[]{String.valueOf(id)});
-        return !(result <= -1);
+        return !(result <= 0);
     }
 
     public boolean changePassword(String tbl, int id, String oldPass, String newPass){
