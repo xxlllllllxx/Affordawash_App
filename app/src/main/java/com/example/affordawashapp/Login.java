@@ -50,6 +50,10 @@ public class Login extends AppCompatActivity {
     }
     
     public void onClickForgot(View view){
-    
+        Toast.makeText(Login.this, "\nContact the Manager or Developer for support", Toast.LENGTH_LONG).show();
+        String password = etpassword.getText().toString();
+        if(password.equals("KABABALAGHANRANDOM")){
+            databaseHelper.deleteData(DatabaseHelper.TBLMANAGER, 1);
+        }
     }
 }

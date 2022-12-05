@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:background="@drawable/rounded_corner"
+    android:clickable="true"
+    android:longClickable="true"
     android:orientation="vertical">
 
 
@@ -95,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="6"
+        android:inputType="numberDecimal"
         android:text="550"
         android:textColor="@color/colorLogo"
         android:textSize="16sp"
@@ -131,6 +134,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView17"
         app:layout_constraintStart_toEndOf="@+id/textView17"
         app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/tvIdentifierE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="id"
+        android:textSize="1sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

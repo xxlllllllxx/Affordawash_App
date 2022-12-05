@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private ContentValues putContent(String tbl, String[] arr, int id){
         ContentValues values = new ContentValues();
         if(id > 0){
-            values.put("id", id);
+            //values.put("id", id);
         }
         switch (tbl){
             case TBLMANAGER:
@@ -135,14 +135,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     
     public boolean updateData(String tbl, int id,  String[] arr){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
-        long result = 0;
-        if(liteDatabase.rawQuery("SELECT * FROM " + tbl + " WHERE id = '" + id + "'", null).getCount() < 1){
-            result = liteDatabase.insert(tbl, null, putContent(tbl, arr, id));
-            
-        } else {
-            result = liteDatabase.update(tbl, putContent(tbl, arr, id), "id = ?", new String[]{Integer.toString(id)});
-        }
-        return (!(result <= -1)) && (id > 0);
+        long result = liteDatabase.update(tbl, putContent(tbl, arr, id), "id = ?", new String[]{Integer.toString(id)});
+        return (!(result <= 0)) && (id > 0);
     }
     
     public boolean deleteData(String tbl, int id){
@@ -263,6 +257,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(field, data);
         long result = liteDatabase.update(tbl, values, "id = ?", new String[]{String.valueOf(id)});
         return !(result <= -1);
+    }
+
+    public boolean changePassword(String tbl, int id, String oldPass, String newPass){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        String field = (tbl.equals(TBLMANAGER))? managerFields[2]:employeeFields[2];
+        ContentValues values = new ContentValues();
+        values.put(field, newPass);
+        long result = liteDatabase.update(tbl, values, field + " = ?", new String[]{oldPass});
+        return (!(result <= 0)) && (id > 0);
     }
 }
 

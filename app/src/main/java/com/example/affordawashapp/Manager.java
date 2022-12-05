@@ -3,12 +3,10 @@ package com.example.affordawashapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Constraints;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,12 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class Manager extends AppCompatActivity {
     DatabaseHelper databaseHelper;
@@ -46,8 +40,7 @@ public class Manager extends AppCompatActivity {
         }
         updateInfo();
     }
-    
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -69,7 +62,7 @@ public class Manager extends AppCompatActivity {
                 }
                 break;
             case R.id.changePassword:
-                unpair();
+                changePassword();
                 break;
             case R.id.logout:
                 intent.removeExtra("id");
@@ -77,6 +70,13 @@ public class Manager extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
+                break;
+            case R.id.about:
+                about();
+                break;
+            case R.id.profile:
+                unpair();
+                profile();
                 break;
             default:
                 return false;
@@ -278,6 +278,32 @@ public class Manager extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.change_password, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
         builder.setView(view);
+        builder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String oldPass = ((EditText) view.findViewById(R.id.etOldPassword)).getText().toString();
+                String newPass = ((EditText) view.findViewById(R.id.etNewPass)).getText().toString();
+                String confirm = ((EditText) view.findViewById(R.id.etConfirmNewPAss)).getText().toString();
+
+                if(newPass.equals(confirm)){
+                    if(databaseHelper.changePassword(DatabaseHelper.TBLMANAGER, getIntent().getIntExtra("id", 0), oldPass, confirm)){
+                        displayInfo("Password changed");
+                    } else {
+                        displayInfo("Old password not match");
+                    }
+                } else {
+                    displayInfo("New password not match");
+                }
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
     }
     
     private void updateInfo(){
@@ -289,5 +315,48 @@ public class Manager extends AppCompatActivity {
         tvICount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLITEM, DatabaseHelper.itemFields[0]));
         tvMCount.setText("" + databaseHelper.getCount(DatabaseHelper.TBLMACHINE, DatabaseHelper.machineFields[0]));
         
+    }
+
+    private void about(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.about, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
+        builder.setView(view);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+    private void profile(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.profile, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
+        builder.setView(view);
+        builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String wholename = ((EditText) view.findViewById(R.id.etMname)).getText().toString();
+                String username = ((EditText) view.findViewById(R.id.etMUsername)).getText().toString();
+                String title = ((EditText) view.findViewById(R.id.etMTitle)).getText().toString();
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    protected void onResume() {
+        updateInfo();
+        super.onResume();
     }
 }

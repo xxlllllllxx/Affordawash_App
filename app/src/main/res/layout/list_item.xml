@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:background="@drawable/rounded_corner"
+    android:longClickable="true"
     android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvIdentifierI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="id"
+        android:textSize="1sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvItemName"
@@ -129,35 +141,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvItemLowestPrice" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/ic_baseline_cancel_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/ic_baseline_check_circle_24"
-        android:backgroundTint="@color/color_green"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <ImageView
         android:id="@+id/imageButton3"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@drawable/ic_baseline_bubble_chart_24"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etLsItemQuantity"
         app:layout_constraintTop_toBottomOf="@+id/tvItemName" />
 
     <ImageView
@@ -165,8 +154,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/etLsItemLP"
         app:layout_constraintTop_toBottomOf="@+id/etLsItemQuantity"
         app:srcCompat="@drawable/ic_baseline_broken_image_24" />
