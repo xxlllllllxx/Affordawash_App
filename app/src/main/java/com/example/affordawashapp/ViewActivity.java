@@ -1,10 +1,14 @@
 package com.example.affordawashapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,6 +107,15 @@ public class ViewActivity extends AppCompatActivity {
                 displayInfo("Error Occured!");
         }
         tvLabel.setText(label);
+        
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+    
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ViewActivity.this, "long click", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
     
     private void displayInfo(String msg){
