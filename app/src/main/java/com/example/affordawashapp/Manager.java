@@ -69,7 +69,6 @@ public class Manager extends AppCompatActivity {
                 about();
                 break;
             case R.id.profile:
-                unpair();
                 profile();
                 break;
             default:
@@ -79,7 +78,7 @@ public class Manager extends AppCompatActivity {
     }
     
     private void displayInfo(String msg){
-        Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.END | Gravity.TOP, 0, 75);
         toast.show();
     }
@@ -306,7 +305,7 @@ public class Manager extends AppCompatActivity {
             tvName.setText(managerData[3].toUpperCase());
             tvTitle.setText("AFFORDAWASH "+ managerData[4].toUpperCase());
         } catch (Exception e){
-            finish();
+            displayInfo("Error retrieving information");
         }
         TextView tvECount = (TextView) findViewById(R.id.tvEmployeeCount);
         TextView tvICount = (TextView) findViewById(R.id.tvItemCount);

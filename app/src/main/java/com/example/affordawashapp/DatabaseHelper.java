@@ -27,11 +27,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT, "+managerFields[2]+" TEXT, "+managerFields[3]+" TEXT, "+managerFields[4]+" TEXT)");
-        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" TEXT, "+employeeFields[4]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
+        db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT UNIQUE, "+managerFields[2]+" TEXT, "+managerFields[3]+" TEXT UNIQUE, "+managerFields[4]+" TEXT)");
+        db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT UNIQUE, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" TEXT UNIQUE, "+employeeFields[4]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT UNIQUE, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT UNIQUE, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT UNIQUE, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
     }
     
     @Override
@@ -283,6 +283,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return items;
     }
+
+    public String[] getAvailable(boolean wash, boolean dry){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        Cursor res = liteDatabase.rawQuery("SELECT * FROM " + TBLMACHINE + " WHERE is_available = true AND washing = " + wash +" AND drying = " + dry , null);
+        if(res.getCount() == 0){
+            return new String[]{"NO DATA!"};
+        } else {
+            while (res.moveToNext()){
+                String[] arr = new String[2];
+                arr[0] = res.getString(1);
+                arr[1] = res.getString(5);
+                arr[2] = res.getString(6);
+                ContentValues values = new ContentValues();
+                values.put("is_available", false);
+                liteDatabase.update(TBLMACHINE, values, "id = ?", new String[]{res.getString(0)});
+                return arr;
+            }
+        }
+        return new String[]{"NO DATA!"};
+    }
+
 }
 
 

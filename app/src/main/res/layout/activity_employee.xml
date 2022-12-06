@@ -5,28 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
     android:showDividers="beginning|end"
     tools:context=".Employee">
-
-    <TextView
-        android:id="@+id/tvEmployeeeUseername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmployeeeUseername"
+        app:layout_constraintTop_toBottomOf="@+id/imageView22"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
@@ -36,14 +26,53 @@
             android:orientation="vertical" />
     </ScrollView>
 
+    <ImageView
+        android:id="@+id/imageView22"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvEmployeeeUseername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
+        android:drawableTint="@color/colorPrimaryDark"
+        android:text="username"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tvEmployeeWholeName"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmployeeWholeName" />
+
+    <TextView
+        android:id="@+id/tvEmployeeWholeName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="DUMMY DATA"
+        android:textAllCaps="true"
+        android:textColor="@color/colorLogo"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="20dp"
         android:background="@drawable/circle_edit"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -51,27 +80,34 @@
         <EditText
             android:id="@+id/etCustomerName"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/colorPrimary"
             android:ems="10"
-            android:hint="Customer Name"
+            android:hint="Enter new Customer Name"
             android:inputType="textPersonName"
-            android:paddingLeft="24dp"
+            android:paddingLeft="15dp"
             android:textColor="@color/colorLogo"
             android:textColorHint="@color/colorLogo"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="2dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="2dp"
             android:background="@drawable/ic_baseline_add_circle_24"
             android:backgroundTint="@color/colorLogo"
             android:onClick="onClickAddCustomer"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_bubble_chart_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

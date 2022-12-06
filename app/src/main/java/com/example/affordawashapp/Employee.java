@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +28,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Employee extends AppCompatActivity {
 
@@ -40,9 +47,15 @@ public class Employee extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
-        ((TextView) findViewById(R.id.tvEmployeeeUseername)).setText(getIntent().getStringExtra("username"));
         intent = getIntent();
         databaseHelper = new DatabaseHelper(Employee.this);
+        try {
+            String[] employeeData = databaseHelper.retrieveData(DatabaseHelper.TBLEMPLOYEE, intent.getIntExtra("id", 0))[0];
+            ((TextView) findViewById(R.id.tvEmployeeWholeName)).setText(employeeData[3].toUpperCase());
+            ((TextView) findViewById(R.id.tvEmployeeeUseername)).setText(intent.getStringExtra("username"));
+        } catch (Exception e){
+            displayInfo(e.toString());
+        }
         etCustomername = (EditText) findViewById(R.id.etCustomerName);
         customerList = (LinearLayout) findViewById(R.id.llCustomerList);
         transactions = new ArrayList<>();
@@ -128,21 +141,45 @@ public class Employee extends AppCompatActivity {
                             });
                             spinnerItem.setAdapter(adapter);
                             builderItem.setView(viewItem);
+
+                            ((EditText) viewItem.findViewById(R.id.etQuantity)).addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    try {
+                                        String quantity = ((EditText) viewItem.findViewById(R.id.etQuantity)).getText().toString();
+                                        double total = Integer.valueOf(quantity) * Double.parseDouble(itemPriceFromDb[spinnerPosition]);
+                                        ((TextView) viewItem.findViewById(R.id.tvCalculate)).setText("" + total);
+                                        ((TextView) viewItem.findViewById(R.id.tvItemStock)).setText("" + (Integer.parseInt(itemStockFromDb[spinnerPosition]) - Integer.parseInt(quantity)));
+                                    } catch (Exception e){
+                                    }
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable editable) {
+
+                                }
+                            });
                             builderItem.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
                                         int quantity = Integer.parseInt(((EditText) viewItem.findViewById(R.id.etQuantity)).getText().toString());
                                         if(quantity > 0){
-                                            data.addListItems(itemListFromDb[spinnerPosition], quantity);
+                                            data.addListItems(itemListFromDb[spinnerPosition], quantity, Double.parseDouble(itemPriceFromDb[spinnerPosition]));
                                             orderSummary(data);
                                         }
                                     }catch (Exception e){
-                                        displayInfo(e.toString());
+                                        displayInfo("No Input");
                                     }
 
                                 }
                             });
+
                             builderItem.show();
                         }
                     });
@@ -158,6 +195,11 @@ public class Employee extends AppCompatActivity {
                                     try{
                                         data.isWashing = ((CheckBox) viewMachine.findViewById(R.id.cbWashingCust)).isChecked();
                                         data.isDrying = ((CheckBox) viewMachine.findViewById(R.id.cbDryingCust)).isChecked();
+                                        String[] availablemachine = databaseHelper.getAvailable(data.isWashing, data.isDrying);
+                                        if(availablemachine[0].equals("NO DATA!")){
+                                            displayInfo("No available machine");
+                                        }
+                                        data.machineIdentifier = availablemachine[0];
                                         orderSummary(data);
                                     } catch (Exception e){
 
@@ -191,6 +233,7 @@ public class Employee extends AppCompatActivity {
                         for (Transaction transaction : transactions) {
                             if(transaction.name.equals(((Button) view).getText().toString())){
                                 transactions.remove(transaction);
+                                transaction = null;
                                 updateTransactions();
                             }
                         }
@@ -207,24 +250,33 @@ public class Employee extends AppCompatActivity {
             }
         });
         btn.setText(customerName);
-        btn.setBackgroundResource(R.drawable.rounded_corner);
+        btn.setBackgroundResource(R.drawable.dark_rounded_corner);
         customerList.addView(btn);
     }
 
     private void orderSummary(Transaction data) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
         View view = Employee.this.getLayoutInflater().inflate(R.layout.view_transact, null);
-        //builder.setView(view);
+        builder.setView(view);
         try {
-            //builder.setNegative("COMPLETE TRANSACTION
-            //builder.setPostive("BACK
-            String tmp = data.isWashing + ":Washing " + data.isDrying + ":Drying";
-            for (Transaction.PairItem listItem : data.listItems) {
-                tmp += listItem.getItemname() + " " + listItem.getItemQuantity() + "\n";
+            ((TextView) view.findViewById(R.id.tvCustomerNameTransact)).setText(data.name);
+            ((TextView) view.findViewById(R.id.tvDateTransact)).setText(data.dateTime);
+            String strName = "";
+            String strPrice = "";
+            String strQuantity = "";
+            double total = 0;
+            for (Transaction.ItemInfo listItem : data.listItems) {
+                strName += listItem.getItemname().toUpperCase() + "\n";
+                strPrice += listItem.getPrice() + "\n";
+                strQuantity += listItem.getItemQuantity() + "\n";
+                total += listItem.getPrice() * listItem.getItemQuantity();
             }
-            builder.setMessage(tmp);
+            ((TextView) view.findViewById(R.id.tvItemNameTransact)).setText(strName);
+            ((TextView) view.findViewById(R.id.tvItemPriceTransact)).setText(strPrice);
+            ((TextView) view.findViewById(R.id.tvItemQuantityTransact)).setText(strQuantity);
+            ((TextView) view.findViewById(R.id.tvTotalTransact)).setText("" + total);
         } catch (Exception e){
-            displayInfo(e.toString());
+            displayInfo("Error");
         }
         builder.show();
     }
@@ -234,13 +286,22 @@ public class Employee extends AppCompatActivity {
         if(name.equals("")){
             displayInfo("Customer name is empty");
         } else {
-            transactions.add(new Transaction(name, getIntent().getIntExtra("id", 0)));
+            for (Transaction transaction : transactions) {
+                if(name.equals(transaction.name)){
+                    displayInfo("Customer already exists");
+                    return;
+                }
+            }
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String dateTime = dateFormat.format(date);
+            transactions.add(new Transaction(name, getIntent().getIntExtra("id", 0), dateTime));
             updateTransactions();
         }
     }
 
     private void displayInfo(String msg){
-        Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getApplicationContext(), "\n" + msg, Toast.LENGTH_LONG);
         toast.setGravity(Gravity.END | Gravity.TOP, 0, 75);
         toast.show();
     }
@@ -292,7 +353,5 @@ public class Employee extends AppCompatActivity {
 
         builder.show();
     }
-
-
 
 }

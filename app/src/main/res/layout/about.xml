@@ -39,7 +39,6 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/alfa_slab_one"
         android:text="ABOUT US"
         android:textColor="@color/colorPrimary"
         android:textSize="34sp"
@@ -52,6 +51,7 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
         android:text="ESTRELLA, DIERO\nCALIM, ARWYN\nMASALLO, LEWIS\nSANTOS, EON\nSEGGUEP, CHRISTIAN\nBERNARDO, JOHN LUIS"
         android:textAlignment="center"
@@ -59,5 +59,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView12"
         app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12"
+        app:lineHeight="25dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

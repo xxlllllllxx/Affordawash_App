@@ -187,14 +187,13 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             android:onClick="onClickButtons"
             android:text="Counter: "
             android:textColor="#855E5E5E"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toTopOf="@+id/tvEmployeeCount"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView8"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

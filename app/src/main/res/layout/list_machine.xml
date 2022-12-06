@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="230dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner"
     android:longClickable="true"
     android:orientation="horizontal">
@@ -21,9 +21,12 @@
 
     <ImageView
         android:id="@+id/imageButton6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="120dp"
         android:background="@drawable/ic_baseline_bubble_chart_24"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMachineName" />
 
@@ -72,10 +75,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/white_rounded_esge"
         android:ems="7"
         android:inputType="numberDecimal"
+        android:padding="10dp"
         android:text="65.0"
         android:textColor="@color/colorLogo"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvWashing"
         app:layout_constraintStart_toEndOf="@+id/tvWashing"
         app:layout_constraintTop_toTopOf="@+id/tvWashing" />
@@ -85,10 +91,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/white_rounded_esge"
         android:ems="7"
         android:inputType="numberDecimal"
+        android:padding="10dp"
         android:text="65.0"
         android:textColor="@color/colorLogo"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tvDrying"
         app:layout_constraintStart_toEndOf="@+id/tvWashing"
         app:layout_constraintTop_toTopOf="@+id/tvDrying" />
