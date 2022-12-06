@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
-    int millis = 3000;
+    int millis = 500;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
             if (databaseHelper.createData(DatabaseHelper.TBLMANAGER, new String[]{"Admin1234", "Admin1234", "Real Proceso", "CEO"})) {
                 TextView userlogin = (TextView) findViewById(R.id.tvUserlogin);
                 userlogin.setText("USERNAME: Admin1234\nPASSWORD: Admin1234");
-                millis = 5000;
+                millis = 1000;
             }
         }
         Thread thread = new Thread(){

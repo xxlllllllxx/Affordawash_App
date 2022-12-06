@@ -52,10 +52,10 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
             case DatabaseHelper.TBLMACHINE:
                 ((TextView) convertView.findViewById(R.id.tvIdentifierM)).setText(data[position][0]);
                 ((TextView) convertView.findViewById(R.id.tvMachineName)).setText(data[position][1]);
-                ((Switch) convertView.findViewById(R.id.swWashing)).setChecked(data[position][3].equals("1"));
-                ((Switch) convertView.findViewById(R.id.swDrying)).setChecked(data[position][4].equals("1"));
-                ((EditText) convertView.findViewById(R.id.etWashingPrice)).setText(data[position][5]);
-                ((EditText) convertView.findViewById(R.id.etDryingPrice)).setText(data[position][6]);
+                ((Switch) convertView.findViewById(R.id.swWashing)).setChecked(data[position][2].equals("1"));
+                ((Switch) convertView.findViewById(R.id.swDrying)).setChecked(data[position][3].equals("1"));
+                ((EditText) convertView.findViewById(R.id.etWashingPrice)).setText(data[position][4]);
+                ((EditText) convertView.findViewById(R.id.etDryingPrice)).setText(data[position][5]);
                 break;
             case DatabaseHelper.TBLCUSTOMER:
                 ((TextView) convertView.findViewById(R.id.tvIdentifierC)).setText(data[position][0]);
