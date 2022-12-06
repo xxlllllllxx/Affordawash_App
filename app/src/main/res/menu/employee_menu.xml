@@ -7,6 +7,11 @@
         android:title="Help"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_baseline_account_box_24"
+        android:title="Profile"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/changePassword"
         android:title="Change Password"/>
     <item

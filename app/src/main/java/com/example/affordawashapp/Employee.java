@@ -5,8 +5,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,11 +35,13 @@ public class Employee extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     Transaction data;
     int spinnerPosition = 0;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
         ((TextView) findViewById(R.id.tvEmployeeeUseername)).setText(getIntent().getStringExtra("username"));
+        intent = getIntent();
         databaseHelper = new DatabaseHelper(Employee.this);
         etCustomername = (EditText) findViewById(R.id.etCustomerName);
         customerList = (LinearLayout) findViewById(R.id.llCustomerList);
@@ -54,6 +58,19 @@ public class Employee extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.about:
+                about();
+                break;
+            case R.id.changePassword:
+                changePassword();
+                break;
+            case R.id.logout:
+                intent.removeExtra("id");
+                intent.removeExtra("username");
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
             default:
                 displayInfo(item.getTitle().toString());
         }
@@ -227,5 +244,55 @@ public class Employee extends AppCompatActivity {
         toast.setGravity(Gravity.END | Gravity.TOP, 0, 75);
         toast.show();
     }
+
+    private void about(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.about, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
+        builder.setView(view);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+    private void changePassword(){
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.change_password, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
+        builder.setView(view);
+        builder.setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String oldPass = ((EditText) view.findViewById(R.id.etOldPassword)).getText().toString();
+                String newPass = ((EditText) view.findViewById(R.id.etNewPass)).getText().toString();
+                String confirm = ((EditText) view.findViewById(R.id.etConfirmNewPAss)).getText().toString();
+
+                if(newPass.equals(confirm)){
+                    if(databaseHelper.changePassword(DatabaseHelper.TBLEMPLOYEE, getIntent().getIntExtra("id", 0), oldPass, confirm)){
+                        displayInfo("Password changed");
+                    } else {
+                        displayInfo("Old password not match");
+                    }
+                } else {
+                    displayInfo("New password not match");
+                }
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.show();
+    }
+
+
 
 }
