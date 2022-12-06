@@ -49,7 +49,7 @@
         android:layout_marginEnd="28dp"
         app:layout_constraintBottom_toTopOf="@+id/cbDryingCust"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCustomerName"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout6"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_bubble_chart_24" />
 
@@ -57,13 +57,14 @@
         android:id="@+id/cbWashingCust"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:buttonTint="@color/colorLogo"
+        android:clickable="false"
         android:text="WASH"
         android:textColor="@color/colorLogo"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/tvCustomerName"
-        app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
     <CheckBox
         android:id="@+id/cbDryingCust"
@@ -71,10 +72,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorLogo"
+        android:clickable="false"
         android:text="DRY"
         android:textColor="@color/colorLogo"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/cbWashingCust"
         app:layout_constraintTop_toTopOf="@+id/cbWashingCust" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/white_rounded_esge"
+        android:backgroundTint="@color/colorLogo"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/cbDryingCust"
+        app:layout_constraintStart_toStartOf="@+id/cbWashingCust"
+        app:layout_constraintTop_toBottomOf="@+id/tvCustomerName">
+
+        <Spinner
+            android:id="@+id/spinService"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_white"
+            android:dropDownWidth="match_parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

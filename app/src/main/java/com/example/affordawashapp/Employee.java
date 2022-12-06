@@ -10,13 +10,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,7 +22,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +39,8 @@ public class Employee extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     Transaction data;
     int spinnerPosition = 0;
+    int spinnerServicePosition = 0;
+    double change;
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +114,14 @@ public class Employee extends AppCompatActivity {
                             data = transaction;
                         }
                     }
-                    builder.setMessage(data.name);
+                    builder.setMessage(data.name.toUpperCase());
                     builder.setPositiveButton("ADD ITEM", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
                             View viewItem = Employee.this.getLayoutInflater().inflate(R.layout.item_picker, null);
                             Spinner spinnerItem = (Spinner) viewItem.findViewById(R.id.spinItem);
+                            String[] itemIdFromDb = databaseHelper.itemList(0);
                             String[] itemListFromDb = databaseHelper.itemList(1);
                             String[] itemPriceFromDb = databaseHelper.itemList(5);
                             String[] itemStockFromDb = databaseHelper.itemList(2);
@@ -170,7 +170,7 @@ public class Employee extends AppCompatActivity {
                                     try {
                                         int quantity = Integer.parseInt(((EditText) viewItem.findViewById(R.id.etQuantity)).getText().toString());
                                         if(quantity > 0){
-                                            data.addListItems(itemListFromDb[spinnerPosition], quantity, Double.parseDouble(itemPriceFromDb[spinnerPosition]));
+                                            data.addListItems(itemListFromDb[spinnerPosition], quantity, Double.parseDouble(itemPriceFromDb[spinnerPosition]), Integer.parseInt(itemIdFromDb[spinnerPosition]));
                                             orderSummary(data);
                                         }
                                     }catch (Exception e){
@@ -183,28 +183,47 @@ public class Employee extends AppCompatActivity {
                             builderItem.show();
                         }
                     });
-                    builder.setNegativeButton("EDIT SERVICES", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("ADD SERVICES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
-                            View viewMachine = Employee.this.getLayoutInflater().inflate(R.layout.service_picker, null);
-                            builderItem.setView(viewMachine);
+                            View viewService = Employee.this.getLayoutInflater().inflate(R.layout.service_picker, null);
+                            Spinner spinnerService = (Spinner) viewService.findViewById(R.id.spinService);
+                            String[] serviceMachinesId = databaseHelper.machineList(0);
+                            String[] serviceListFromDb = databaseHelper.machineList(1);
+                            String[] serviceMachineWash = databaseHelper.machineList(2);
+                            String[] serviceMachineDry= databaseHelper.machineList(3);
+                            String[] servicewashPrice = databaseHelper.machineList(4);
+                            String[] servicedryPrice = databaseHelper.machineList(5);
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(Employee.this, R.layout.list_items_item, R.id.tvItemListItem, serviceListFromDb);
+                            spinnerService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    spinnerServicePosition = i;
+                                    ((CheckBox) viewService.findViewById(R.id.cbWashingCust)).setChecked(serviceMachineWash[i].equals("1"));
+                                    ((CheckBox) viewService.findViewById(R.id.cbDryingCust)).setChecked(serviceMachineDry[i].equals("1"));
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+                            spinnerService.setAdapter(adapter);
+                            builderItem.setView(viewService);
                             builderItem.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try{
-                                        data.isWashing = ((CheckBox) viewMachine.findViewById(R.id.cbWashingCust)).isChecked();
-                                        data.isDrying = ((CheckBox) viewMachine.findViewById(R.id.cbDryingCust)).isChecked();
-                                        String[] availablemachine = databaseHelper.getAvailable(data.isWashing, data.isDrying);
-                                        if(availablemachine[0].equals("NO DATA!")){
-                                            displayInfo("No available machine");
-                                        }
-                                        data.machineIdentifier = availablemachine[0];
+                                        data.isWashing = ((CheckBox) viewService.findViewById(R.id.cbWashingCust)).isChecked();
+                                        data.isDrying = ((CheckBox) viewService.findViewById(R.id.cbDryingCust)).isChecked();
+                                        data.wash = Double.parseDouble(servicewashPrice[spinnerServicePosition]);
+                                        data.dry = Double.parseDouble(servicedryPrice[spinnerServicePosition]);
+                                        data.machineId = Integer.parseInt(serviceMachinesId[spinnerServicePosition]);
                                         orderSummary(data);
-                                    } catch (Exception e){
-
+                                    } catch (Exception e) {
+                                        displayInfo(e.toString());
                                     }
-
                                 }
                             });
                             builderItem.show();
@@ -257,6 +276,7 @@ public class Employee extends AppCompatActivity {
     private void orderSummary(Transaction data) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
         View view = Employee.this.getLayoutInflater().inflate(R.layout.view_transact, null);
+        change = 0;
         builder.setView(view);
         try {
             ((TextView) view.findViewById(R.id.tvCustomerNameTransact)).setText(data.name);
@@ -275,9 +295,85 @@ public class Employee extends AppCompatActivity {
             ((TextView) view.findViewById(R.id.tvItemPriceTransact)).setText(strPrice);
             ((TextView) view.findViewById(R.id.tvItemQuantityTransact)).setText(strQuantity);
             ((TextView) view.findViewById(R.id.tvTotalTransact)).setText("" + total);
+            ((CheckBox) view.findViewById(R.id.cbWashTransact)).setChecked(data.isWashing);
+            ((CheckBox) view.findViewById(R.id.cbDryingTransact)).setChecked(data.isDrying);
+            ((TextView) view.findViewById(R.id.tvWashingPrice)).setText("" +data.wash);
+            ((TextView) view.findViewById(R.id.tvDryingPrice)).setText("" +data.dry);
+            ((TextView) view.findViewById(R.id.tvTotalServiceCost)).setText("" + (data.wash + data.dry));
+            double grandtotal = total + data.wash + data.dry;
+            ((TextView) view.findViewById(R.id.tvGrandTotal)).setText("" + grandtotal);
+            data.payment = grandtotal;
+            EditText etAmount = (EditText) view.findViewById(R.id.etTenderedAmount);
+            etAmount.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if(etAmount.getText().length() >= 1) {
+                        change = (Double.parseDouble(etAmount.getText().toString()) - grandtotal);
+                        if(change > 0){
+                            ((TextView) view.findViewById(R.id.tvChange)).setText("" + change);
+                        } else {
+                            ((TextView) view.findViewById(R.id.tvChange)).setText("0");
+                        }
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
         } catch (Exception e){
             displayInfo("Error");
         }
+        builder.setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.setNeutralButton("COMPLETE PAYMENT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(change < 0){
+                    displayInfo("Insufficient Amount");
+                } else {
+                    AlertDialog.Builder areyousure = new AlertDialog.Builder(Employee.this);
+                    areyousure.setMessage("Are you sure you want to complete this transaction? ");
+                    areyousure.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            try{
+                                String machine = data.machineId + " " + (data.dry + data.wash);
+                                String items = "";
+                                for (Transaction.ItemInfo listItem : data.listItems) {
+                                    items += listItem.getItemId() + " " + listItem.getItemQuantity() + " " + (listItem.getItemQuantity() * listItem.getPrice()) + ":";
+                                }
+                                if(databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{data.name, String.valueOf(intent.getIntExtra("id", 0)), machine, items, String.valueOf(data.payment), data.dateTime})){
+                                    displayInfo("Saved database");
+                                } else {
+                                    displayInfo("Transaction history not saved");
+                                }
+                            } catch (Exception e){
+                                displayInfo("Transaction error");
+                            }
+                        }
+                    });
+                    areyousure.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    areyousure.show();
+                }
+            }
+        });
         builder.show();
     }
 

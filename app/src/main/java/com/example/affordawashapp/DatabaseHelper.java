@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String[] managerFields = {"id", "manager_username", "manager_password", "manager_whole_name", "manager_title"};
     public static final String[] employeeFields = {"id", "employee_username", "employee_password", "employee_whole_name", "employee_salary"};
     public static final String[] itemFields = {"id", "item_name", "item_quantity", "item_cost", "item_lowest_price", "item_selling_price"};
-    public static final String[] machineFields = {"id", "machine_name", "is_available", "washing", "drying", "washing_price", "drying_price"};
+    public static final String[] machineFields = {"id", "service_name", "washing", "drying", "washing_price", "drying_price"};
     public static final String[] customerFields = {"id", "customer_alias", "employee_id", "machine_id_list", "item_id_list", "transaction_payment", "transaction_datetime"};
     
     public DatabaseHelper(Context context){
@@ -30,8 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TBLMANAGER + "("+managerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+managerFields[1]+" TEXT UNIQUE, "+managerFields[2]+" TEXT, "+managerFields[3]+" TEXT UNIQUE, "+managerFields[4]+" TEXT)");
         db.execSQL("CREATE TABLE " + TBLEMPLOYEE + "("+employeeFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+employeeFields[1]+" TEXT UNIQUE, "+employeeFields[2]+" TEXT, "+employeeFields[3]+" TEXT UNIQUE, "+employeeFields[4]+" DOUBLE)");
         db.execSQL("CREATE TABLE " + TBLITEM + "("+itemFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+itemFields[1]+" TEXT UNIQUE, "+itemFields[2]+" INTEGER, "+itemFields[3]+" DOUBLE, "+itemFields[4]+" DOUBLE, "+itemFields[5]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT UNIQUE, "+machineFields[2]+" BOOLEAN, "+machineFields[3]+" BOOLEAN, "+machineFields[4]+" BOOLEAN, "+machineFields[5]+" DOUBLE, "+machineFields[6]+" DOUBLE)");
-        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT UNIQUE, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
+        db.execSQL("CREATE TABLE " + TBLMACHINE + "("+machineFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+machineFields[1]+" TEXT UNIQUE, "+machineFields[2]+" INTEGER, "+machineFields[3]+" INTEGER, "+machineFields[4]+" DOUBLE, "+machineFields[5]+" DOUBLE)");
+        db.execSQL("CREATE TABLE " + TBLCUSTOMER + "("+customerFields[0]+" INTEGER PRIMARY KEY AUTOINCREMENT, "+customerFields[1]+" TEXT, "+customerFields[2]+" INTEGER, "+customerFields[3]+" TEXT, "+customerFields[4]+" TEXT, "+customerFields[5]+" DOUBLE, "+customerFields[6]+" TEXT)");
     }
     
     @Override
@@ -72,11 +72,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 break;
             case TBLMACHINE:
                 values.put(machineFields[1], arr[0]);
-                values.put(machineFields[2], true);
-                values.put(machineFields[3], Boolean.parseBoolean(arr[1]));
-                values.put(machineFields[4], Boolean.parseBoolean(arr[2]));
-                values.put(machineFields[5], Double.parseDouble(arr[3]));
-                values.put(machineFields[6], Double.parseDouble(arr[4]));
+                values.put(machineFields[2], Integer.parseInt(arr[1]));
+                values.put(machineFields[3], Integer.parseInt(arr[2]));
+                values.put(machineFields[4], Double.parseDouble(arr[3]));
+                values.put(machineFields[5], Double.parseDouble(arr[4]));
                 break;
             case TBLCUSTOMER:
                 values.put(customerFields[1], arr[0]);
@@ -111,7 +110,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch(tbl){
             case TBLMANAGER: column = 5; break;
             case TBLEMPLOYEE: column = 5; break;
-            case TBLMACHINE: column = 7; break;
+            case TBLMACHINE: column = 6; break;
             case TBLITEM: column = 6; break;
             case TBLCUSTOMER: column = 7; break;
             default: column = 0;
@@ -152,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch(tbl){
             case TBLMANAGER: col = 5; break;
             case TBLEMPLOYEE: col = 5; break;
-            case TBLMACHINE: col = 7; break;
+            case TBLMACHINE: col = 6; break;
             case TBLITEM: col = 6; break;
             case TBLCUSTOMER: col = 7; break;
             default: col = 0;
@@ -209,22 +208,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             return str;
         }catch (Exception e){
-            return "EXEPRIONN IN UNLISTITEM";
+            return "NO DATA!";
         }
     }
     
     public String unlistMachine(String list){
-        try{
-        String[] tmp = list.split(":");
         String str = "";
-        for (int i = 0; i < tmp.length; i++) {
-            String[] data = tmp[i].split(" ");
-            str += getColumnField(TBLMACHINE, machineFields[1], data[0]) + " - " + data[1] + "\n";
-        }
+        String[] data = list.split(" ");
+        str += getColumnField(TBLMACHINE, machineFields[1], data[0]) + " - " + data[1] + "\n";
         return str;
-        }catch (Exception e){
-            return "EXEPRIONN IN UNLISTITEM";
-        }
     }
     
     public String getColumnField(String tbl, String column, String id){
@@ -283,26 +275,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return items;
     }
-
-    public String[] getAvailable(boolean wash, boolean dry){
+    public String[] machineList(int xx){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
-        Cursor res = liteDatabase.rawQuery("SELECT * FROM " + TBLMACHINE + " WHERE is_available = true AND washing = " + wash +" AND drying = " + dry , null);
+
+        Cursor res = liteDatabase.rawQuery("SELECT * FROM "+ TBLMACHINE, null);
+        String[] items = new String[res.getCount()];
         if(res.getCount() == 0){
             return new String[]{"NO DATA!"};
         } else {
-            while (res.moveToNext()){
-                String[] arr = new String[2];
-                arr[0] = res.getString(1);
-                arr[1] = res.getString(5);
-                arr[2] = res.getString(6);
-                ContentValues values = new ContentValues();
-                values.put("is_available", false);
-                liteDatabase.update(TBLMACHINE, values, "id = ?", new String[]{res.getString(0)});
-                return arr;
+            int ctr = 0;
+            while (res.moveToNext()) {
+                items[ctr] = res.getString(xx);
+                ctr++;
             }
         }
-        return new String[]{"NO DATA!"};
+        return items;
     }
+
 
 }
 

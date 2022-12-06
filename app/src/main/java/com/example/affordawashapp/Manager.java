@@ -233,8 +233,8 @@ public class Manager extends AppCompatActivity {
                         displayInfo("Fields cannot be empty");
                     } else {
                         String machineName = etMachineName.getText().toString();
-                        String washing = (cbWash.isChecked())?"true" : "false";
-                        String drying = (cbDry.isChecked())?"true" : "false";
+                        String washing = (cbWash.isChecked())?"1" : "0";
+                        String drying = (cbDry.isChecked())?"1" : "0";
                         String washP = (cbWash.isChecked())? etWashP.getText().toString() : "0.0";
                         String dryP = (cbDry.isChecked())? etDryP.getText().toString(): "0.0";
                         if (databaseHelper.createData(databaseHelper.TBLMACHINE, new String[]{machineName, washing, drying, washP, dryP})) {
@@ -262,8 +262,8 @@ public class Manager extends AppCompatActivity {
 
     }
     
-    private void unpair() {
-        databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{"Jordan", "2", "1 65:2 65", "1 3 24:2 1 8.4:3 1 10", "172", "Dec 5, 2022 - 6:12"});
+    private void test() {
+        //For testing purposes
     }
 
     private void changePassword(){

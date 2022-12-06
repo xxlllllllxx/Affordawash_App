@@ -6,10 +6,12 @@ public class Transaction {
     String name;
     int employee_id;
     ArrayList<ItemInfo> listItems;
+    int machineId;
     boolean isWashing;
     boolean isDrying;
     double wash;
     double dry;
+    double payment;
     String dateTime;
     String machineIdentifier;
 
@@ -20,15 +22,16 @@ public class Transaction {
         this.dateTime = dateTime;
     }
 
-    public void addListItems(String itemname, int itemQuantity, double price){
-        listItems.add(new ItemInfo(itemname, itemQuantity, price));
+    public void addListItems(String itemname, int itemQuantity, double price, int id){
+        listItems.add(new ItemInfo(itemname, itemQuantity, price, id));
     }
 
     public class ItemInfo {
         private String itemname;
         private int itemQuantity;
         private double price;
-        public ItemInfo(String itemname, int itemQuantity, double price){
+        private int itemId;
+        public ItemInfo(String itemname, int itemQuantity, double price, int id){
             this.itemname = itemname;
             this.itemQuantity = itemQuantity;
             this.price = price;
@@ -44,6 +47,10 @@ public class Transaction {
 
         public double getPrice() {
             return price;
+        }
+
+        public int getItemId() {
+            return itemId;
         }
     }
 

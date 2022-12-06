@@ -175,7 +175,7 @@
             android:layout_marginEnd="10dp"
             android:onClick="onClickButtons"
             android:paddingVertical="5dp"
-            android:text="MACHINES"
+            android:text="SERVICES"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
@@ -250,7 +250,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/half_circle"
                 android:onClick="onClickButtons"
-                android:text="ADD MACHINE"
+                android:text="ADD SERVICE"
                 android:textColor="@color/colorLogo"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -299,7 +299,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/half_circle_2"
                 android:onClick="onClickButtons"
-                android:text="VIEW MACHINES"
+                android:text="VIEW SERVICES"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:textStyle="bold" />
