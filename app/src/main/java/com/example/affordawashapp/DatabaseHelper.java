@@ -97,8 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = liteDatabase.insert(tbl, null, putContent(tbl, arr, 0));
         return !(result <= -1);
     }
-    
-    //RETURNS A MULTI-DIMENTIONAL ARRAY
+
     public String[][] retrieveData(String tbl, int id){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         Cursor res;
@@ -198,7 +197,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         
     }
-    
+
+    //Other Methods
     public String unlistItem(String list){
         try {
             String[] tmp = list.split(":");
@@ -227,7 +227,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
     
-    //Other Methods
     public String getColumnField(String tbl, String column, String id){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         Cursor res = liteDatabase.rawQuery("SELECT " + column + " FROM " + tbl + " WHERE id = '" + id + "'", null);
@@ -266,6 +265,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(field, newPass);
         long result = liteDatabase.update(tbl, values, field + " = ?", new String[]{oldPass});
         return (!(result <= 0)) && (id > 0);
+    }
+
+    public String[] itemList(int xx){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        String[] items = null;
+        Cursor res = liteDatabase.rawQuery("SELECT * FROM "+ TBLITEM, null);
+        items = new String[res.getCount()];
+        if(res.getCount() == 0){
+            return new String[]{"NO DATA!"};
+        } else {
+            int ctr = 0;
+            while (res.moveToNext()) {
+                items[ctr] = res.getString(xx);
+                ctr++;
+            }
+        }
+        return items;
     }
 }
 
