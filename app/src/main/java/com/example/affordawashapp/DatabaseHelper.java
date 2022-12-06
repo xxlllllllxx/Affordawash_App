@@ -223,8 +223,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         Cursor res = liteDatabase.rawQuery("SELECT " + column + " FROM " + tbl + " WHERE id = '" + id + "'", null);
         while (res.moveToNext()) {
-                return res.getString(0);
-            }
+            return res.getString(0);
+        }
         return "NO DATA!";
     }
     

@@ -241,7 +241,7 @@
         android:text="SERVICES: "
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/cbWashTransact"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="@+id/textView24" />
 
     <View
         android:id="@+id/divider"

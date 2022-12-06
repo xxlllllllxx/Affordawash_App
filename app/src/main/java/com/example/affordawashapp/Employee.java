@@ -70,6 +70,16 @@ public class Employee extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.viewTransactions:
+                if(databaseHelper.getCount(DatabaseHelper.TBLCUSTOMER, "id") > 0) {
+                    Intent intent = new Intent(Employee.this, ViewActivity.class);
+                    intent.putExtra("table", DatabaseHelper.TBLCUSTOMER);
+                    intent.putExtra("resource", R.layout.list_customer);
+                    startActivity(intent);
+                } else {
+                    displayInfo("Transaction Table is Empty");
+                }
+                break;
             case R.id.about:
                 about();
                 break;
@@ -252,7 +262,6 @@ public class Employee extends AppCompatActivity {
                         for (Transaction transaction : transactions) {
                             if(transaction.name.equals(((Button) view).getText().toString())){
                                 transactions.remove(transaction);
-                                transaction = null;
                                 updateTransactions();
                             }
                         }
@@ -340,8 +349,8 @@ public class Employee extends AppCompatActivity {
         builder.setNeutralButton("COMPLETE PAYMENT", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(change < 0){
-                    displayInfo("Insufficient Amount");
+                if(change < 0 || data.payment < 1){
+                    displayInfo("Transaction failed");
                 } else {
                     AlertDialog.Builder areyousure = new AlertDialog.Builder(Employee.this);
                     areyousure.setMessage("Are you sure you want to complete this transaction? ");
@@ -355,7 +364,9 @@ public class Employee extends AppCompatActivity {
                                     items += listItem.getItemId() + " " + listItem.getItemQuantity() + " " + (listItem.getItemQuantity() * listItem.getPrice()) + ":";
                                 }
                                 if(databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{data.name, String.valueOf(intent.getIntExtra("id", 0)), machine, items, String.valueOf(data.payment), data.dateTime})){
-                                    displayInfo("Saved database");
+                                    displayInfo("Transaction complete");
+                                    transactions.remove(data);
+                                    updateTransactions();
                                 } else {
                                     displayInfo("Transaction history not saved");
                                 }
@@ -389,7 +400,7 @@ public class Employee extends AppCompatActivity {
                 }
             }
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String dateTime = dateFormat.format(date);
             transactions.add(new Transaction(name, getIntent().getIntExtra("id", 0), dateTime));
             updateTransactions();

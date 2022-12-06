@@ -13,7 +13,6 @@ public class Transaction {
     double dry;
     double payment;
     String dateTime;
-    String machineIdentifier;
 
     public Transaction(String name, int employeeId, String dateTime){
         this.name = name;
@@ -35,6 +34,7 @@ public class Transaction {
             this.itemname = itemname;
             this.itemQuantity = itemQuantity;
             this.price = price;
+            this.itemId = id;
         }
 
         public String getItemname() {
