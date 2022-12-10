@@ -337,10 +337,10 @@ public class Manager extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.profile, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(Manager.this);
         builder.setView(view);
-        int id = getIntent().getIntExtra("id", 1);
-        EditText etWholename = (EditText) view.findViewById(R.id.etMname);
-        EditText etUsername = (EditText) view.findViewById(R.id.etMUsername);
-        EditText etTitle = (EditText) view.findViewById(R.id.etMTitle);
+        final int id = getIntent().getIntExtra("id", 1);
+        final EditText etWholename = (EditText) view.findViewById(R.id.etMname);
+        final EditText etUsername = (EditText) view.findViewById(R.id.etMUsername);
+        final EditText etTitle = (EditText) view.findViewById(R.id.etMTitle);
         try {
             String[][] data = databaseHelper.retrieveData(DatabaseHelper.TBLMANAGER, id);
             if (data[0][0].equals("NO DATA!")) {

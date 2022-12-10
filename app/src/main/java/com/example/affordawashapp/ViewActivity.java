@@ -4,10 +4,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -15,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Collection;
 
 public class ViewActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
@@ -40,7 +40,6 @@ public class ViewActivity extends AppCompatActivity {
                         idE[i] = dataE[i][0];
                         dataE[i][2] = String.valueOf(databaseHelper.getCountSame(DatabaseHelper.TBLCUSTOMER, DatabaseHelper.customerFields[2], String.valueOf(idE[i])));
                     }
-                    
                         CustomViewAdapter adapter = new CustomViewAdapter(ViewActivity.this, R.layout.list_employee, DatabaseHelper.TBLEMPLOYEE, dataE, idE);
                         list.setAdapter(adapter);
                     }catch (Exception e){
@@ -77,7 +76,6 @@ public class ViewActivity extends AppCompatActivity {
                     for (int i = 0; i < dataM.length; i++) {
                         idM[i] = dataM[i][0];
                     }
-                    
                         CustomViewAdapter adapter = new CustomViewAdapter(ViewActivity.this, getIntent().getIntExtra("resource", -1), DatabaseHelper.TBLMACHINE, dataM, idM);
                         list.setAdapter(adapter);
                     } catch (Exception e){
@@ -112,7 +110,8 @@ public class ViewActivity extends AppCompatActivity {
         tvLabel.setText(label);
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                final View view = v;
                 AlertDialog.Builder builder = new AlertDialog.Builder(ViewActivity.this);
                 switch (getIntent().getStringExtra("table")){
                     case DatabaseHelper.TBLEMPLOYEE:
@@ -233,9 +232,9 @@ public class ViewActivity extends AppCompatActivity {
                                     String idd = ((TextView) view.findViewById(R.id.tvIdentifierM)).getText().toString();
                                     String name = ((TextView) view.findViewById(R.id.tvMachineName)).getText().toString();
                                     boolean w = ((Switch) view.findViewById(R.id.swWashing)).isChecked();
-                                    String washing = String.valueOf(w);
+                                    String washing = (w)? "1":"0";
                                     boolean d = ((Switch) view.findViewById(R.id.swDrying)).isChecked();
-                                    String drying = String.valueOf(d);
+                                    String drying = (d)? "1":"0";
                                     String washingP = (w)? ((EditText) view.findViewById(R.id.etWashingPrice)).getText().toString(): "0.0";
                                     String dryingP = (d)? ((EditText) view.findViewById(R.id.etDryingPrice)).getText().toString(): "0.0";
 
@@ -249,7 +248,7 @@ public class ViewActivity extends AppCompatActivity {
                                         displayInfo("Failed to save record changes");
                                     }
                                 } catch (Exception e){
-                                    displayInfo("Failed to save changes");
+                                    displayInfo(e.toString());
                                 }
                             }
                         });

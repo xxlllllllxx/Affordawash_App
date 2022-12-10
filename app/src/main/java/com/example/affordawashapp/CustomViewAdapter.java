@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Collection;
+
 public class CustomViewAdapter extends ArrayAdapter<String> {
     Context context;
     String tbl;
@@ -24,8 +26,19 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
         this.res = resource;
         this.context = context;
         this.tbl = tbl;
-        this.data = data;
+        this.data = reverse(data);
     }
+    
+    private String[][] reverse(String[][] raw){
+        String[][] tmp = new String[raw.length][raw[0].length];
+        int ctr = 0;
+        for (int i = (raw.length-1); i >= 0; i--) {
+            tmp[i] = raw[ctr];
+            ctr++;
+        }
+        return tmp;
+    }
+    
     
     @NonNull
     @Override
@@ -70,4 +83,5 @@ public class CustomViewAdapter extends ArrayAdapter<String> {
         }
         return convertView;
     }
+    
 }

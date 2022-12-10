@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 public class Employee extends AppCompatActivity {
 
@@ -106,7 +107,8 @@ public class Employee extends AppCompatActivity {
         }
     }
 
-    private void addCustomer(String customerName){
+    private void addCustomer(String n){
+        final String customerName = n;
         etCustomername.setText("");
         Button btn = new Button(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 120);
@@ -129,12 +131,12 @@ public class Employee extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
-                            View viewItem = Employee.this.getLayoutInflater().inflate(R.layout.item_picker, null);
+                            final View viewItem = Employee.this.getLayoutInflater().inflate(R.layout.item_picker, null);
                             Spinner spinnerItem = (Spinner) viewItem.findViewById(R.id.spinItem);
-                            String[] itemIdFromDb = databaseHelper.itemList(0);
-                            String[] itemListFromDb = databaseHelper.itemList(1);
-                            String[] itemPriceFromDb = databaseHelper.itemList(5);
-                            String[] itemStockFromDb = databaseHelper.itemList(2);
+                            final String[] itemIdFromDb = databaseHelper.itemList(0);
+                            final String[] itemListFromDb = databaseHelper.itemList(1);
+                            final String[] itemPriceFromDb = databaseHelper.itemList(5);
+                            final String[] itemStockFromDb = databaseHelper.itemList(2);
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Employee.this, R.layout.list_items_item, R.id.tvItemListItem, itemListFromDb);
                             spinnerItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -178,10 +180,14 @@ public class Employee extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
-                                        int quantity = Integer.parseInt(((EditText) viewItem.findViewById(R.id.etQuantity)).getText().toString());
-                                        if(quantity > 0){
-                                            data.addListItems(itemListFromDb[spinnerPosition], quantity, Double.parseDouble(itemPriceFromDb[spinnerPosition]), Integer.parseInt(itemIdFromDb[spinnerPosition]));
-                                            orderSummary(data);
+                                        if(Integer.parseInt(((TextView) viewItem.findViewById(R.id.tvItemStock)).getText().toString()) >= 0) {
+                                            int quantity = Integer.parseInt(((EditText) viewItem.findViewById(R.id.etQuantity)).getText().toString());
+                                            if (quantity > 0) {
+                                                data.addListItems(itemListFromDb[spinnerPosition], quantity, Double.parseDouble(itemPriceFromDb[spinnerPosition]), Integer.parseInt(itemIdFromDb[spinnerPosition]));
+                                                orderSummary(data);
+                                            }
+                                        } else {
+                                            displayInfo("Item stock not enough");
                                         }
                                     }catch (Exception e){
                                         displayInfo("No Input");
@@ -197,14 +203,14 @@ public class Employee extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
-                            View viewService = Employee.this.getLayoutInflater().inflate(R.layout.service_picker, null);
+                            final View viewService = Employee.this.getLayoutInflater().inflate(R.layout.service_picker, null);
                             Spinner spinnerService = (Spinner) viewService.findViewById(R.id.spinService);
-                            String[] serviceMachinesId = databaseHelper.machineList(0);
-                            String[] serviceListFromDb = databaseHelper.machineList(1);
-                            String[] serviceMachineWash = databaseHelper.machineList(2);
-                            String[] serviceMachineDry= databaseHelper.machineList(3);
-                            String[] servicewashPrice = databaseHelper.machineList(4);
-                            String[] servicedryPrice = databaseHelper.machineList(5);
+                            final String[] serviceMachinesId = databaseHelper.machineList(0);
+                            final String[] serviceListFromDb = databaseHelper.machineList(1);
+                            final String[] serviceMachineWash = databaseHelper.machineList(2);
+                            final String[] serviceMachineDry= databaseHelper.machineList(3);
+                            final String[] servicewashPrice = databaseHelper.machineList(4);
+                            final String[] servicedryPrice = databaseHelper.machineList(5);
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(Employee.this, R.layout.list_items_item, R.id.tvItemListItem, serviceListFromDb);
                             spinnerService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -253,17 +259,24 @@ public class Employee extends AppCompatActivity {
         }
         btn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public boolean onLongClick(View v) {
+                final View view = v;
                 AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
                 builder.setMessage("Delete " + customerName + " in Customers list?");
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        for (Transaction transaction : transactions) {
-                            if(transaction.name.equals(((Button) view).getText().toString())){
-                                transactions.remove(transaction);
-                                updateTransactions();
+                        try {
+                            for (Iterator<Transaction> it = transactions.iterator();  it.hasNext();) {
+                                Transaction transaction = it.next();
+                                if(transaction.name.equals(((Button) view).getText().toString())){
+                                    it.remove();
+                                }
                             }
+                            updateTransactions();
+                            
+                        }catch (Exception e){
+                            displayInfo("Error");
                         }
                     }
                 });
@@ -282,9 +295,10 @@ public class Employee extends AppCompatActivity {
         customerList.addView(btn);
     }
 
-    private void orderSummary(Transaction data) {
+    private void orderSummary(Transaction d) {
+        final Transaction data = d;
         AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
-        View view = Employee.this.getLayoutInflater().inflate(R.layout.view_transact, null);
+        final View view = Employee.this.getLayoutInflater().inflate(R.layout.view_transact, null);
         change = 0;
         builder.setView(view);
         try {
@@ -309,10 +323,10 @@ public class Employee extends AppCompatActivity {
             ((TextView) view.findViewById(R.id.tvWashingPrice)).setText("" +data.wash);
             ((TextView) view.findViewById(R.id.tvDryingPrice)).setText("" +data.dry);
             ((TextView) view.findViewById(R.id.tvTotalServiceCost)).setText("" + (data.wash + data.dry));
-            double grandtotal = total + data.wash + data.dry;
+            final double grandtotal = total + data.wash + data.dry;
             ((TextView) view.findViewById(R.id.tvGrandTotal)).setText("" + grandtotal);
             data.payment = grandtotal;
-            EditText etAmount = (EditText) view.findViewById(R.id.etTenderedAmount);
+            final EditText etAmount = (EditText) view.findViewById(R.id.etTenderedAmount);
             etAmount.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -361,6 +375,7 @@ public class Employee extends AppCompatActivity {
                                 String machine = data.machineId + " " + (data.dry + data.wash);
                                 String items = "";
                                 for (Transaction.ItemInfo listItem : data.listItems) {
+                                    databaseHelper.itemRemoval(listItem.getItemId(), listItem.getItemQuantity());
                                     items += listItem.getItemId() + " " + listItem.getItemQuantity() + " " + (listItem.getItemQuantity() * listItem.getPrice()) + ":";
                                 }
                                 if(databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{data.name, String.valueOf(intent.getIntExtra("id", 0)), machine, items, String.valueOf(data.payment), data.dateTime})){
@@ -371,7 +386,7 @@ public class Employee extends AppCompatActivity {
                                     displayInfo("Transaction history not saved");
                                 }
                             } catch (Exception e){
-                                displayInfo("Transaction error");
+                                displayInfo(e.toString());
                             }
                         }
                     });

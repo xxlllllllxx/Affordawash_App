@@ -275,6 +275,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return items;
     }
+    
     public String[] machineList(int xx){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
 
@@ -292,7 +293,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-
+    public boolean itemRemoval(int id, int quantity){
+        SQLiteDatabase liteDatabase = this.getWritableDatabase();
+        Cursor res = liteDatabase.rawQuery("UPDATE tbl_item SET item_quantity = item_quantity - "+quantity+ " WHERE id="+id, null);
+        return true;
+    }
 }
 
 
