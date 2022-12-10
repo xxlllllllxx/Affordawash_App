@@ -66,7 +66,7 @@ public class ViewActivity extends AppCompatActivity {
                 }
                 break;
             case DatabaseHelper.TBLMACHINE:
-                label = "MACHINE LIST";
+                label = "OFFERED SERVICES";
                 String[][] dataM = databaseHelper.retrieveData(DatabaseHelper.TBLMACHINE, 0);
                 if(dataM[0][0].equals("NO DATA!")){
                     finish();
