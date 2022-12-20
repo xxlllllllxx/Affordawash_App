@@ -1,9 +1,5 @@
 package com.example.affordawashapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,11 +53,11 @@ public class Employee extends AppCompatActivity {
             String[] employeeData = databaseHelper.retrieveData(DatabaseHelper.TBLEMPLOYEE, intent.getIntExtra("id", 0))[0];
             ((TextView) findViewById(R.id.tvEmployeeWholeName)).setText(employeeData[3].toUpperCase());
             ((TextView) findViewById(R.id.tvEmployeeeUseername)).setText(intent.getStringExtra("username"));
-        } catch (Exception e){
+        } catch (Exception e) {
             displayInfo(e.toString());
         }
-        etCustomername = (EditText) findViewById(R.id.etCustomerName);
-        customerList = (LinearLayout) findViewById(R.id.llCustomerList);
+        etCustomername = findViewById(R.id.etCustomerName);
+        customerList = findViewById(R.id.llCustomerList);
         transactions = new ArrayList<>();
     }
 
@@ -132,7 +132,7 @@ public class Employee extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
                             final View viewItem = Employee.this.getLayoutInflater().inflate(R.layout.item_picker, null);
-                            Spinner spinnerItem = (Spinner) viewItem.findViewById(R.id.spinItem);
+                            Spinner spinnerItem = viewItem.findViewById(R.id.spinItem);
                             final String[] itemIdFromDb = databaseHelper.itemList(0);
                             final String[] itemListFromDb = databaseHelper.itemList(1);
                             final String[] itemPriceFromDb = databaseHelper.itemList(5);
@@ -204,7 +204,7 @@ public class Employee extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             AlertDialog.Builder builderItem = new AlertDialog.Builder(Employee.this);
                             final View viewService = Employee.this.getLayoutInflater().inflate(R.layout.service_picker, null);
-                            Spinner spinnerService = (Spinner) viewService.findViewById(R.id.spinService);
+                            Spinner spinnerService = viewService.findViewById(R.id.spinService);
                             final String[] serviceMachinesId = databaseHelper.machineList(0);
                             final String[] serviceListFromDb = databaseHelper.machineList(1);
                             final String[] serviceMachineWash = databaseHelper.machineList(2);
@@ -299,6 +299,7 @@ public class Employee extends AppCompatActivity {
         final Transaction data = d;
         AlertDialog.Builder builder = new AlertDialog.Builder(Employee.this);
         final View view = Employee.this.getLayoutInflater().inflate(R.layout.view_transact, null);
+        final EditText etAmount = view.findViewById(R.id.etTenderedAmount);
         change = 0;
         builder.setView(view);
         try {
@@ -326,7 +327,7 @@ public class Employee extends AppCompatActivity {
             final double grandtotal = total + data.wash + data.dry;
             ((TextView) view.findViewById(R.id.tvGrandTotal)).setText("" + grandtotal);
             data.payment = grandtotal;
-            final EditText etAmount = (EditText) view.findViewById(R.id.etTenderedAmount);
+    
             etAmount.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -363,7 +364,7 @@ public class Employee extends AppCompatActivity {
         builder.setNeutralButton("COMPLETE PAYMENT", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(change < 0 || data.payment < 1){
+                if (change < 0 || data.payment < 1 || etAmount.getText().toString().isEmpty()) {
                     displayInfo("Transaction failed");
                 } else {
                     AlertDialog.Builder areyousure = new AlertDialog.Builder(Employee.this);
@@ -371,14 +372,15 @@ public class Employee extends AppCompatActivity {
                     areyousure.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            try{
+                            try {
                                 String machine = data.machineId + " " + (data.dry + data.wash);
                                 String items = "";
+                                boolean flag = true;
                                 for (Transaction.ItemInfo listItem : data.listItems) {
-                                    databaseHelper.itemRemoval(listItem.getItemId(), listItem.getItemQuantity());
+                                    flag = databaseHelper.itemRemoval(listItem.getItemId(), listItem.getItemQuantity());
                                     items += listItem.getItemId() + " " + listItem.getItemQuantity() + " " + (listItem.getItemQuantity() * listItem.getPrice()) + ":";
                                 }
-                                if(databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{data.name, String.valueOf(intent.getIntExtra("id", 0)), machine, items, String.valueOf(data.payment), data.dateTime})){
+                                if (flag && databaseHelper.createData(DatabaseHelper.TBLCUSTOMER, new String[]{data.name, String.valueOf(intent.getIntExtra("id", 0)), machine, items, String.valueOf(data.payment), data.dateTime})) {
                                     displayInfo("Transaction complete");
                                     transactions.remove(data);
                                     updateTransactions();

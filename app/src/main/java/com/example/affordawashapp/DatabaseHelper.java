@@ -296,7 +296,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean itemRemoval(int id, int quantity){
         SQLiteDatabase liteDatabase = this.getWritableDatabase();
         Cursor res = liteDatabase.rawQuery("UPDATE tbl_item SET item_quantity = item_quantity - "+quantity+ " WHERE id="+id, null);
-        return true;
+        return res.getCount() == 0;
     }
 }
 
